@@ -1,26 +1,39 @@
 "use strict";
-
-// es5 polyfills, powered by es5-shim
 require("es5-shim")
-// es6 polyfills, powered by babel
 require("babel/register")
-
 var Promise = require('es6-promise').Promise
-// just Node?
-// var fetch = require('node-fetch')
-// Browserify?
-// require('whatwg-fetch') //--> not a typo, don't store as a var
+import $ from 'jquery'
+import React from 'react'
+var injectTapEventPlugin = require("react-tap-event-plugin");
+injectTapEventPlugin();
+import * as Comp from './components/comps'
 
-// other stuff that we don't really use in our own code
-// var Pace = require("../bower_components/pace/pace.js")
+Parse.$ = $
+Parse.initialize("hFTYt5zZR2erwzvgvK2CTn6boEn3wXPTwQryJRTg", "HQhZqHrGATYYNw1YRa9mqDzjKH9WVa29L6uLmzqX");
 
-// require your own libraries, too!
-// var Router = require('./app.js')
+var AppRouter = Parse.Router.extend({
+	initialize: function() {
+		Parse.history.start()
+		window.location.hash = 'home'
+		window.addEventListener('hashchange', () => !Parse.User.current && (window.location.hash ='login'))
+	},
+    routes: {
+        'login': 'login',
+        'home': 'home',
+        'profile': 'profile'
+    },
+    loading: function() {
+    	React.render( <CircularProgress mode="indeterminate" size={2} />, document.querySelector('.container'))
+    },
+    login: function() {
+    	React.render( <Comp.Login /> , document.querySelector('.container'))
+    },
+    home: function() {
+		React.render( <Comp.Home />, document.querySelector('.container'))
+    },
+    taste: function() {
+		React.render(<Comp.Taste />, document.querySelector('.container'))
+    }
+})
 
-// window.addEventListener('load', app)
-
-// function app() {
-    // start app
-    // new Router()
-// }
-
+var pGlass = new AppRouter()
