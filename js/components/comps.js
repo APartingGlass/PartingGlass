@@ -47,12 +47,24 @@ export class Login extends M.UI {
 export class Home extends M.UI {
 	constructor(props) {
 		super(props)
+		this.state = {timer: 6}
+	}
+	showTime() {
+		var time = (this.state.timer%1 ===0) ? (Math.floor(this.state.timer) +':00') : (Math.floor(this.state.timer) +':30')
+		console.log(time)
+		if (time === '10:30') {return 'untimed'} else {return time}
 	}
 	render() {
-		return(<div>
-			<RaisedButton href="https://github.com/callemall/material-ui" secondary={true} label="Taste"/>
- 			<RaisedButton href="https://github.com/callemall/material-ui" secondary={true} label="Wine Log"/>
- 			<RaisedButton href="https://github.com/callemall/material-ui" secondary={true} label="Study"/>
-		</div>)
+		return(<M.ui.Card>
+          <M.ui.CardTitle title="Taste" subtitle="Run through a single wine, timed or untimed"/>
+          <M.ui.CardActions>
+            <M.ui.FlatButton label="GO" /><M.ui.FlatButton label={this.showTime()}/>
+            <M.ui.Slider className="timeSlider" name="Time" onChange={(e, val) => this.setState({timer:val})} min={4} defaultValue={6} step={0.5} max={10.5}/>
+          </M.ui.CardActions>
+          <M.ui.CardText>
+          	Blind-tasting is one of the most challenging tasks any individual can engage themselves in.
+          	Here, you'll find a stage to practice. 
+          </M.ui.CardText>
+        </M.ui.Card>)
 	}
 }
