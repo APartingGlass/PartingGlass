@@ -15,6 +15,7 @@ var AppRouter = Parse.Router.extend({
 	initialize: function() {
 		Parse.history.start()
 		window.location.hash = 'home'
+		window.addEventListener('hashchange', () => !Parse.User.current && (window.location.hash ='login'))
 	},
     routes: {
         'login': 'login',
@@ -25,18 +26,13 @@ var AppRouter = Parse.Router.extend({
     	React.render( <CircularProgress mode="indeterminate" size={2} />, document.querySelector('.container'))
     },
     login: function() {
-        if (Parse.User.current()) {
-            window.location.hash = 'home'
-        } else {
-        	React.render( <Comp.Login /> , document.querySelector('.container'))
-        }
+    	React.render( <Comp.Login /> , document.querySelector('.container'))
     },
     home: function() {
-    	if (Parse.User.current()) {
-    		React.render( <Comp.Home />, document.querySelector('.container'))
-    	} else {
-    		window.location.hash = 'login'
-    	}
+		React.render( <Comp.Home />, document.querySelector('.container'))
+    },
+    taste: function() {
+		React.render(<Comp.Taste />, document.querySelector('.container'))
     }
 })
 

@@ -51,14 +51,13 @@ export class Home extends M.UI {
 	}
 	showTime() {
 		var time = (this.state.timer%1 ===0) ? (Math.floor(this.state.timer) +':00') : (Math.floor(this.state.timer) +':30')
-		console.log(time)
 		if (time === '10:30') {return 'untimed'} else {return time}
 	}
 	render() {
 		return(<M.ui.Card>
           <M.ui.CardTitle title="Taste" subtitle="Run through a single wine, timed or untimed"/>
           <M.ui.CardActions>
-            <M.ui.FlatButton label="GO" /><M.ui.FlatButton label={this.showTime()}/>
+            <M.ui.FlatButton onClick={() => window.location.hash = 'taste'} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
             <M.ui.Slider className="timeSlider" name="Time" onChange={(e, val) => this.setState({timer:val})} min={4} defaultValue={6} step={0.5} max={10.5}/>
           </M.ui.CardActions>
           <M.ui.CardText>
@@ -66,5 +65,14 @@ export class Home extends M.UI {
           	Here, you'll find a stage to practice. 
           </M.ui.CardText>
         </M.ui.Card>)
+	}
+}
+
+export class Taste extends M.UI {
+	constructor(props) {
+		super(props)
+	}
+	render() {
+
 	}
 }
