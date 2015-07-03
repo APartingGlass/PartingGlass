@@ -1,8 +1,7 @@
 
 @import "../bower_components/normalize-css/normalize.css";
 @import "../bower_components/typeplate-starter-kit/css/typeplate.css";
-@import "../node_modules/materialize-css/bin/materialize.css"
-
+@import "../js/materialize-css/bin/materialize.css"
 /**
  * BOX-SIZING
  */
@@ -88,3 +87,6 @@ img {
 /**
  * YOUR CODE HERE
  */
+body {
+    background-color: rgb(163, 231, 240);
+ }

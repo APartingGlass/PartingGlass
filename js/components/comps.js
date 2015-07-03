@@ -1,5 +1,11 @@
 import * as M from '../MUI'
 import React from 'react'
+import * as WT from './whiteTaste'
+
+var Red = Parse.Object.extend({
+	className: 'Red'
+})
+
 
 export class Login extends M.UI {
 	constructor(props) {
@@ -12,7 +18,9 @@ export class Login extends M.UI {
 	login(e) {
 		e.preventDefault()
 		Parse.User.logIn(this.state.username, this.state.password, {
-			success: (...args) => {},
+			success: (...args) => {
+				window.location.hash = 'home'
+			},
 			error: function(user, error) {
 				alert(error)
 			}
@@ -68,11 +76,24 @@ export class Home extends M.UI {
 	}
 }
 
-export class Taste extends M.UI {
+export class TasteLanding extends M.UI {
 	constructor(props) {
 		super(props)
+		this.state = {
+			wine: null
+		}
 	}
 	render() {
-
+		var wineView = <div/>
+		if (this.state.wine === 'white') {
+			wineView = <WT.WhiteTaste  />
+		} else if (this.state.wine === 'red') {
+			wineView = <div/>
+		}
+		return (<span>
+		<M.ui.RaisedButton onClick={() => this.setState({wine: 'red'})} label="Red" primary={true} />
+		<M.ui.RaisedButton onClick={() => this.setState({wine: 'white'})}label="White" secondary={true} />
+		{wineView}
+		</span>)
 	}
 }
