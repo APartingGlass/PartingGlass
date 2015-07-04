@@ -1,8 +1,6 @@
-
 @import "../bower_components/normalize-css/normalize.css";
 @import "../bower_components/typeplate-starter-kit/css/typeplate.css";
-@import "../node_modules/materialize-css/bin/materialize.css"
-
+@import "../js/materialize-css/bin/materialize.css"
 /**
  * BOX-SIZING
  */
@@ -12,7 +10,6 @@
 *:after {
     box-sizing: border-box;
 }
-
 /**
  * GRIDS
  */
@@ -37,7 +34,9 @@
     }
 }
 
-@define-mixin gridify $col, $width, $gutter: 2 {
+@define-mixin gridify $col,
+$width,
+$gutter: 2 {
     @media only screen and (min-width: $(width)px) {
         .grid-$(col)-$(width) {
             & > * {
@@ -48,9 +47,11 @@
     }
 }
 
-@mixin gridify 2, 400 {}
-@mixin gridify 4, 600 {}
+@mixin gridify 2,
+400 {}
 
+@mixin gridify 4,
+600 {}
 /**
  * PACE (automatic pre-loader thingy)
  */
@@ -88,3 +89,25 @@ img {
 /**
  * YOUR CODE HERE
  */
+
+body {
+    background-color: #009688;
+    .container {
+        height: 100%;
+        width: 100%
+        .card {
+            display: flex;
+            height: 75%;
+            width: 75%;
+            .wineSelection {
+                flex-grow: 1;
+            }
+            .red {
+                background-color: #b71c1c;
+            }
+            span {
+                flex-grow: 0;
+            }
+        }
+    }
+}
