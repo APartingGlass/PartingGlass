@@ -41,11 +41,11 @@ export class Login extends M.UI {
 	}
 	render() {
 		return (<div>
-				<form>
-					<M.ui.TextField  hintText="username" type='email' value={this.state.username} onChange={(e) => this.setState({username: e.target.value, email:e.target.value})}/>
-					<M.ui.TextField hintText='password' type='password' value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} />
-					<M.ui.RaisedButton onClick={(e) => this.login(e)} label='Login' primary={true}/> 
-					<M.ui.RaisedButton onClick={(e) => window.location.hash = 'register'}  label='Register' primary={false}/>
+				<form className>
+					<input placeholder='username' value={this.state.username} onChange={(e) => this.setState({username: e.target.value, email:e.target.value})}/>
+					<input placeholder='password' type='password' value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} />
+					<div onClick={(e) => this.login(e)}>login</div> 
+					<div onClick={(e) => window.location.hash = 'register'} >Register</div>
 				</form>
 			</div>)
 	}
@@ -162,6 +162,7 @@ export class NavBar extends M.UI {
 	constructor(props) {
 		super(props)
 		this.state = {
+			drop: false
 		}
 		var user = Parse.User.current()
 		this.state.user = user
@@ -170,12 +171,20 @@ export class NavBar extends M.UI {
 		Parse.User.logOut()
 		window.location.hash = 'login'
 	}
+	toggle() {
+		this.setState({
+			drop: !this.state.drop
+		})
+	}
 	render() {
-		var username = this.state.user.attributes.username
-		return (<div className='nav'>
-				<div onClick={() => window.location.hash = 'home'}>PartingGlass</div>
-				<div onClick={() => window.location.hash = 'profile'}>{username}</div>
-				<div onClick={() => this.logOut}>Sign Out</div>
-			</div>)
+		var username = this.state.user.attributes.username					
+		var menu = this.state.drop ? <div className='signOut' onClick={() => this.logOut()}>Sign Out</div> : <span/>
+		return (<div className='bar'>
+					<div className='logo' onClick={() => window.location.hash = 'home'}>PartingGlass</div>
+					<div className='profile' onClick={() => this.toggle()}>
+						{username}
+						<div className='menu'>{menu}</div>
+					</div>
+				</div>)
 	}
 }

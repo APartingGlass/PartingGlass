@@ -1,0 +1,14 @@
+{
+  "global": {
+    "parseVersion": "1.4.2"
+  },
+  "applications": {
+    "APartingGlass": {
+      "applicationId": "hFTYt5zZR2erwzvgvK2CTn6boEn3wXPTwQryJRTg",
+      "masterKey": "eE2RYPzJgmsp0D5zuUm5Z5B67YqjxhpanWLaB1eC"
+    },
+    "_default": {
+      "link": "APartingGlass"
+    }
+  }
+}

@@ -94,7 +94,7 @@ body {
     background-color: #009688;
     .container {
         height: 100%;
-        width: 100%
+        width: 100%;
         .card {
             display: flex;
             height: 75%;
@@ -107,6 +107,29 @@ body {
             }
             span {
                 flex-grow: 0;
+            }
+        }
+    }
+    .nav {
+        min-height: 2rem;
+        margin-bottom: 1.5rem;
+        .bar {
+            background: red;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            div {
+                display: inline-block;
+                margin: 0.5rem;
+            }
+            .profile {
+                float: right;
+                position: relative;
+                .menu {
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                }
             }
         }
     }
