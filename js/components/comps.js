@@ -20,7 +20,7 @@ var Taster = Parse.User.extend({
 	}
 })
 
-export class Login extends M.UI {
+export class Login extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -40,14 +40,12 @@ export class Login extends M.UI {
 		})
 	}
 	render() {
-		return (<div>
-				<form className>
-					<input placeholder='username' value={this.state.username} onChange={(e) => this.setState({username: e.target.value, email:e.target.value})}/>
-					<input placeholder='password' type='password' value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} />
+		return (<form className='loginForm'>
+					<input className="userField" placeholder='username' value={this.state.username} onChange={(e) => this.setState({username: e.target.value, email:e.target.value})}/>
+					<input className="passField" placeholder='password' type='password' value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} />
 					<div onClick={(e) => this.login(e)}>login</div> 
 					<div onClick={(e) => window.location.hash = 'register'} >Register</div>
-				</form>
-			</div>)
+				</form>)
 	}
 }
 
@@ -144,17 +142,14 @@ export class TasteLanding extends M.UI {
 		}
 	}
 	render() {
-		var wineView = <span/>
-		if (this.state.wine === 'white') {
-			wineView = <T.WhiteTaste  />
-		} else if (this.state.wine === 'red') {
-			wineView = <T.RedTaste/>
-		}
 		return (<div className='card'>
-		<div className='wineSelection red' onClick={() => this.setState({wine: 'red'})}>Red</div>
-		<div className='wineSelection white' onClick={() => this.setState({wine: 'white'})}>White</div>
-		{wineView}
-		</div>)
+					<div className='wineSelection red' onClick={() => window.location.hash ='taste/red'}>
+						<div>Red</div>
+					</div>
+					<div className='wineSelection white' onClick={() => window.location.hash ='taste/white'}>
+						<div>White</div>
+					</div>
+				</div>)
 	}
 }
 

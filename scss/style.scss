@@ -1,6 +1,5 @@
 @import "../bower_components/normalize-css/normalize.css";
 @import "../bower_components/typeplate-starter-kit/css/typeplate.css";
-@import '../js/materialize-css/bin/materialize.css'
 /**
  * BOX-SIZING
  */
@@ -90,47 +89,80 @@ img {
  * YOUR CODE HERE
  */
 
-body {
-    background-color: #009688;
-    .container {
-        height: 100%;
-        width: 100%;
-        .card {
-            display: flex;
-            height: 75%;
-            width: 75%;
-            .wineSelection {
-                flex-grow: 1;
-            }
-            .red {
-                background-color: #b71c1c;
-            }
-            span {
-                flex-grow: 0;
-            }
+.container {
+    background: #1976D2;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    .card {
+        display: flex;
+        height: 75%;
+        width: 75%;
+        margin: auto;
+        .white {
+            background: white;
         }
-    }
-    .nav {
-        min-height: 2rem;
-        margin-bottom: 1.5rem;
-        .bar {
+        .red {
             background: red;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            div {
-                display: inline-block;
-                margin: 0.5rem;
+        }
+        .wineSelection {
+            flex-grow: 1;
+            position: relative;
+            & div {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
             }
-            .profile {
-                float: right;
-                position: relative;
-                .menu {
-                    position: absolute;
-                    top: 100%;
-                    left: 0;
-                }
+        }
+        span {
+            flex-grow: 0;
+        }
+    }
+}
+
+.nav {
+    margin-bottom: 1.5rem;
+    .bar {
+        background: blue;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        div {
+            display: inline-block;
+            margin: 0.5rem;
+        }
+        .profile {
+            float: right;
+            position: relative;
+            .menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
             }
         }
     }
+}
+
+.options {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    .option {
+        flex-grow: 1;
+        position: relative;
+        .text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%)
+        }
+    }
+}
+
+.loginForm {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

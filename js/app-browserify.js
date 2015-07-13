@@ -5,6 +5,7 @@ var Promise = require('es6-promise').Promise
 import $ from 'jquery'
 import React from 'react'
 import * as Comp from './components/comps'
+import * as T from './components/taste'
 
 ///initialize Parse
 Parse.$ = $
@@ -21,7 +22,9 @@ var AppRouter = Parse.Router.extend({
         'home': 'home',
         'profile': 'profile',
         'taste': 'taste',
-        'register': 'register'
+        'register': 'register',
+        'taste/white': 'white',
+        'taste/red': 'red'
     },
     ///loading spinner
     loading: function() {
@@ -30,8 +33,8 @@ var AppRouter = Parse.Router.extend({
     ///login screen
     login: function() {
         if (!Parse.User.current()) {
-            React.render(<span/>, document.querySelector('.nav'))
-    	   React.render( <Comp.Login /> , document.querySelector('.container'))
+        React.render(<span/>, document.querySelector('.nav'))
+    	React.render( <Comp.Login /> , document.querySelector('.container'))
     } else {window.location.hash ='home'}
     },
     ///home screen with different options
@@ -48,6 +51,12 @@ var AppRouter = Parse.Router.extend({
         } else {window.location.hash = 'login'} },
     register: function () {
         React.render(<Comp.Register />, document.querySelector('.container'))
+    },
+    white: function () {
+        React.render(<T.WhiteTaste />, document.querySelector('.container'))
+    },
+    red: function() {
+        React.render(<T.RedTaste/>, document.querySelector('.container'))
     }
     })
 

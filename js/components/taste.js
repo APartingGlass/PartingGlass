@@ -44,7 +44,7 @@ class Option extends React.Component {
     }
     render() {
         var category = 'option ' + this.props.name
-        return (<div onClick={() => this.update()} className={category}>{this.props.name}</div>)
+        return (<div onClick={() => this.update()} className={category} >{this.props.name}</div>)
     }
 }
 
@@ -61,7 +61,9 @@ class VariantOption extends React.Component {
         this.props.node.setState(newState)
     }
     render() {
-        return (<div onClick={() => this.update()}>{this.props.name}</div>)
+        return (<div className='option variantOp' onClick={() => this.update()}>
+            <div className='text'>{this.props.name}</div>
+            </div>)
     }
 }
 
@@ -286,9 +288,7 @@ export class WhiteTaste extends M.UI {
     }
 	render() {
         var Current = this.getScreen()
-		return (<div>
-            <Current controller={this} wine={this.obj}/>
-                </div>)
+		return (<Current controller={this} wine={this.obj}/>)
     }
             
 }
@@ -373,9 +373,7 @@ export class RedTaste extends M.UI {
     }
     render() {
         var Current = this.getScreen()
-        return (<div>
-            <Current controller={this} wine={this.obj}/>
-                </div>)
+        return (<Current controller={this} wine={this.obj}/>)
     }
             
 }
