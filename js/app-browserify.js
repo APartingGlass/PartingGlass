@@ -4,8 +4,6 @@ require("babel/register")
 var Promise = require('es6-promise').Promise
 import $ from 'jquery'
 import React from 'react'
-var injectTapEventPlugin = require("react-tap-event-plugin");
-injectTapEventPlugin();
 import * as Comp from './components/comps'
 
 ///initialize Parse
@@ -22,7 +20,8 @@ var AppRouter = Parse.Router.extend({
         'login': 'login',
         'home': 'home',
         'profile': 'profile',
-        'taste': 'taste'
+        'taste': 'taste',
+        'register': 'register'
     },
     ///loading spinner
     loading: function() {
@@ -31,12 +30,14 @@ var AppRouter = Parse.Router.extend({
     ///login screen
     login: function() {
         if (!Parse.User.current()) {
-    	React.render( <Comp.Login /> , document.querySelector('.container'))
+            React.render(<span/>, document.querySelector('.nav'))
+    	   React.render( <Comp.Login /> , document.querySelector('.container'))
     } else {window.location.hash ='home'}
     },
     ///home screen with different options
     home: function() {
         if(Parse.User.current()) {
+            React.render( <Comp.NavBar />, document.querySelector('.nav'))
             React.render( <Comp.Home />, document.querySelector('.container'))
         } else {window.location.hash = 'login'}
     },
@@ -44,7 +45,10 @@ var AppRouter = Parse.Router.extend({
     taste: function() {
 		if(Parse.User.current()) {
             React.render( <Comp.TasteLanding />, document.querySelector('.container'))
-        } else {window.location.hash = 'login'} }
+        } else {window.location.hash = 'login'} },
+    register: function () {
+        React.render(<Comp.Register />, document.querySelector('.container'))
+    }
     })
 
 var pGlass = new AppRouter()
