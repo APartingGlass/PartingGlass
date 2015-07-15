@@ -28,7 +28,9 @@ class Prompt extends React.Component {
     }
     render() {
         var prompt = this.props.prompt
-        return (<div className="Prompt">{prompt}</div>)
+        return (<div className="Prompt">
+            <div className='text'>{prompt}</div>
+            </div>)
     }
 }
 
@@ -44,7 +46,9 @@ class Option extends React.Component {
     }
     render() {
         var category = 'option ' + this.props.name
-        return (<div onClick={() => this.update()} className={category} >{this.props.name}</div>)
+        return (<div onClick={() => this.update()} className={category} >
+            <div className='text'>{this.props.name}</div>
+            </div>)
     }
 }
 
@@ -89,9 +93,7 @@ class Options extends React.Component {
         this.nextScreen()
     }
     nextScreen() {
-        var current = this.props.controller.state.currentScreen
-        current++
-        this.props.controller.setState({currentScreen: current})
+        this.props.controller.setState({currentScreen: this.props.controller.state.currentScreen+1})
         console.log('next screen')
     }
     render() {
@@ -101,11 +103,11 @@ class Options extends React.Component {
         if (variant === true) { 
             return (<div className="options">{options.map((str) => 
                     <VariantOption node={this} prevState={this.state} name={str}/>)}
-                <div onClick={() => this.submitVariant()}>next</div>
+                <div className='button' onClick={() => this.submitVariant()}>next</div>
                 </div>) 
             } else { return (<div className="options">{options.map((str) => 
                     <Option attr={this.props.attr} node={this} name={str}/>)}
-                <div onClick={()=> this.submit()}>next</div>
+                <div className='button' onClick={()=> this.submit()}>next</div>
                 </div>) }
     }
 }
@@ -116,7 +118,7 @@ class WhiteVisual extends React.Component {
 		super(props)
 	}
 	render () {
-		return (<div className='wineVisual'>
+		return (<div className={`attrScreen ${this.props.className}`}>
                     <Prompt prompt="Which description best matches the wine's color?"/>
                     <Options controller={this.props.controller} variant={false} wine={this.props.wine} node={this} attr='wineColor' options={['Straw', 'Yellow', 'Gold']} />
 				</div>)
@@ -130,7 +132,7 @@ class WhiteFruitFamily extends React.Component {
         }
     }
     render () {
-        return (<div>
+        return (<div className={`attrScreen ${this.props.className}`}>
             <Prompt prompt='Select Fruit Characterstics by Intensity'/>
             <Options controller={this.props.controller} variant={true} wine={this.props.wine} attr='fruitFamily' options={['Apple', 'Citrus', 'Stone', 'Tropical', 'Melon']} />
             </div>)
@@ -145,7 +147,7 @@ class WhiteFruitQuality extends React.Component {
 	}
 	render() {
         this.props.wine.set(this.state)
-		return(<div>
+		return(<div className={`attrScreen ${this.props.className}`}>
             <Prompt prompt='Describe the quality of the fruit' />
             <Options controller={this.props.controller} variant={true} wine={this.props.wine} attr='fruitQuality' options={['Tart','Ripe','Jammy','Oxidized']} />
         </div>)
@@ -157,7 +159,7 @@ class WhiteNonFruit extends React.Component {
 		super(props)
 	}
 	render() {
-		return (<div>
+		return (<div className={`attrScreen ${this.props.className}`}>
             <Prompt prompt='identify non fruit characteristics' />
             <Options controller={this.props.controller} variant={true} wine={this.props.wine} attr='nonFruit' options={['Floral', 'Vegetal', 'Honey/Wax', 'Baking Spice', 'Yeasty', 'Butter/Cream']} />
             </div>)
@@ -170,7 +172,7 @@ class WhiteMineralOak extends React.Component {
 	}
 	render() {
         this.props.wine.set(this.state)
-		return(<div>
+		return(<div className={`attrScreen ${this.props.className}`}>
             <Prompt prompt='Mineral and Oak Characterstics' />
             <Options controller={this.props.controller} variant={true} wine={this.props.wine} attr='mineral' options={['Organic Earth', 'Inorganic Earth', 'Oak']} />
             </div>)
@@ -182,7 +184,7 @@ class Finish extends React.Component {
 		super(props)
 	}
 	render() {
-		return (<div>
+		return (<div className={`attrScreen ${this.props.className}`}>
             <Prompt prompt='Finish' />
             <Options controller={this.props.controller} variant={false} wine={this.props.wine} attr='finish' options={['Short', 'Medium', 'Long']} />
 		        </div>)
@@ -194,7 +196,7 @@ class Sugar extends React.Component {
         super(props)
     }
     render() {
-        return (<div>
+        return (<div className={`attrScreen ${this.props.className}`}>
             <Prompt prompt='Sugar' />
             <Options controller={this.props.controller} variant={false} wine={this.props.wine} attr='sugar' options={['Dry', 'Off-Dry', 'Sweet']} />
             </div>)
@@ -206,7 +208,7 @@ class Acid extends React.Component {
         super(props)
     }
     render() {
-        return (<div>
+        return (<div className={`attrScreen ${this.props.className}`}>
             <Prompt prompt='Acidity' />
             <Options controller={this.props.controller} variant={false} wine={this.props.wine} attr='acidity' options={['Low', 'Moderate-Minus', 'Moderate', 'Moderate-Plus', 'High']} />
             </div>)
@@ -218,7 +220,7 @@ class Alcohol extends React.Component {
         super(props)
     }
     render() {
-        return (<div>
+        return (<div className={`attrScreen ${this.props.className}`}>
             <Prompt prompt='Alcohol Level' />
             <Options controller={this.props.controller} variant={false} wine={this.props.wine} attr='alcohol' options={['Low', 'Moderate-Minus', 'Moderate', 'Moderate-Plus', 'High']} />
             </div>)
@@ -234,7 +236,7 @@ class LogWine extends React.Component {
         window.location.hash = 'home'
     }
     render() {
-        return (<div onClick={() =>this.save()} >Log Wine</div>)
+        return (<div className={`attrScreen ${this.props.className || ''}`} onClick={() =>this.save()} >Log Wine</div>)
     }
 }
 
@@ -262,7 +264,7 @@ class Conclusions extends React.Component {
         console.log('next screen')
     }
     render() {
-        return(<div>
+        return(<div className={`attrScreen ${this.props.className || ''}`}>
                 <input onChange={() =>this.setConclusions('country')} ref='country' placeholder='Country'/>
                 <input onChange={() => this.setConclusions('subregion')} ref='subregion' placeholder='Subregion'/>
                 <input onChange={() => this.setConclusions('grapes')} ref='grapes'placeholder='Grape/s'/>
@@ -276,19 +278,27 @@ class Conclusions extends React.Component {
 export class WhiteTaste extends M.UI {
 	constructor(props){
 		super(props)
-        this.obj = new White()
-        this.obj['createdBy'] = Parse.User.current()
-        this.state = {}
-        this.state.currentScreen = 0
-        this.state.screens = [WhiteVisual, WhiteFruitFamily, WhiteFruitQuality, WhiteNonFruit, 
-        WhiteMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions, LogWine]
+        this.state = {
+            obj: new White(),
+            currentScreen: 0,
+            screens: [WhiteVisual, WhiteFruitFamily, WhiteFruitQuality, WhiteNonFruit, WhiteMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions, LogWine]
+        }
+        this.state.obj['createdBy'] = Parse.User.current()
 	}
-    getScreen() {
-        return this.state.screens[this.state.currentScreen]
-    }
 	render() {
-        var Current = this.getScreen()
-		return (<Current controller={this} wine={this.obj}/>)
+		return (
+            <div>
+            { this.state.screens.map((scrn, index) => {
+                let props = {
+                    className: index <= this.state.currentScreen ? 'visible' : 'hidden',
+                    controller: this,
+                    wine: this.state.obj
+                }
+                return React.createElement(scrn, props)
+            })}
+            </div>
+        )
+        
     }
             
 }
@@ -298,7 +308,7 @@ class RedVisual extends React.Component {
         super(props)
     }
     render () {
-        return (<div className='wineVisual'>
+        return (<div className={`attrScreen ${this.props.className || ''}`}>
                     <Prompt prompt="Which description best matches the wine's color?"/>
                     <Options controller={this.props.controller} variant={false} wine={this.props.wine} node={this} attr='wineColor' options={['Garnet', 'Ruby', 'Purple']} />
                 </div>)
@@ -312,7 +322,7 @@ class RedFruitFamily extends React.Component {
         }
     }
     render () {
-        return (<div>
+        return (<div className={`attrScreen ${this.props.className || ''}`}>
             <Prompt prompt='Select Fruit Characterstics by Intensity'/>
             <Options controller={this.props.controller} variant={true} wine={this.props.wine} attr='fruitFamily' options={['Red', 'Black', 'Blue', 'Fig/Raisin']} />
             </div>)
@@ -326,7 +336,7 @@ class RedFruitQuality extends React.Component {
         }
     }
     render() {
-        return(<div>
+        return(<div className={`attrScreen ${this.props.className || ''}`}>
             <Prompt prompt='Describe the quality of the fruit' />
             <Options controller={this.props.controller} variant={true} wine={this.props.wine} attr='fruitQuality' options={['Tart','Ripe','Jammy','Oxidized']} />
         </div>)
@@ -338,7 +348,7 @@ class RedNonFruit extends React.Component {
         super(props)
     }
     render() {
-        return (<div>
+        return (<div className={`attrScreen ${this.props.className || ''}`}>
             <Prompt prompt='identify non fruit characteristics' />
             <Options controller={this.props.controller} variant={true} wine={this.props.wine} attr='nonFruit' options={['Floral', 'Vegetal', 'Herb/Mint', 'Peppercorn', 'Vanilla/Toast/Smoke', 'Game/Meat/Leather', 'Balsamic/Tar']} />
             </div>)
@@ -350,7 +360,7 @@ class RedMineralOak extends React.Component {
         super(props)
     }
     render() {
-        return(<div>
+        return(<div className={`attrScreen ${this.props.className || ''}`}>
             <Prompt prompt='Mineral and Oak Characterstics' />
             <Options controller={this.props.controller} variant={true} wine={this.props.wine} attr='mineral' options={['Organic Earth', 'Inorganic Earth', 'Oak']} />
             </div>)
@@ -361,19 +371,27 @@ class RedMineralOak extends React.Component {
 export class RedTaste extends M.UI {
     constructor(props){
         super(props)
-        this.obj = new Red()
-        this.obj['createdBy'] = Parse.User.current()
-        this.state = {}
-        this.state.currentScreen = 0
-        this.state.screens = [RedVisual, RedFruitFamily, RedFruitQuality, RedNonFruit, 
-        RedMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions, LogWine]
-    }
-    getScreen() {
-        return this.state.screens[this.state.currentScreen]
+        this.state = {
+            obj: new Red(),
+            currentScreen: 0,
+            screens: [RedVisual, RedFruitFamily, RedFruitQuality, RedNonFruit, RedMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions, LogWine]
+        }
+        this.state.obj['createdBy'] = Parse.User.current()
     }
     render() {
-        var Current = this.getScreen()
-        return (<Current controller={this} wine={this.obj}/>)
+        return (
+            <div>
+            { this.state.screens.map((scrn, index) => {
+                let props = {
+                    className: index <= this.state.currentScreen ? 'visible' : 'hidden',
+                    controller: this,
+                    wine: this.state.obj
+                }
+                return React.createElement(scrn, props)
+            })}
+            </div>
+        )
+        
     }
             
 }

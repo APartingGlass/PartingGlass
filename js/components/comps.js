@@ -120,7 +120,7 @@ export class Home extends M.UI {
 		if (time === '10:30') {return 'untimed'} else {return time}
 	}
 	render() {
-		return(<M.ui.Card>
+		return(<M.ui.Card >
           <M.ui.CardTitle title="Taste" subtitle="Run through a single wine, timed or untimed"/>
           <M.ui.CardActions>
             <M.ui.FlatButton onClick={() => window.location.hash = 'taste'} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
@@ -178,7 +178,9 @@ export class NavBar extends M.UI {
 					<div className='logo' onClick={() => window.location.hash = 'home'}>PartingGlass</div>
 					<div className='profile' onClick={() => this.toggle()}>
 						{username}
-						<div className='menu'>{menu}</div>
+						<div className='menu'>
+						{menu}
+						</div>
 					</div>
 				</div>)
 	}

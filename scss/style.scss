@@ -1,5 +1,6 @@
 @import "../bower_components/normalize-css/normalize.css";
 @import "../bower_components/typeplate-starter-kit/css/typeplate.css";
+@import '../js/materialize-css/bin/materialize.css'
 /**
  * BOX-SIZING
  */
@@ -91,13 +92,14 @@ img {
 
 .container {
     background: #1976D2;
-    height: 100vh;
-    width: 100vw;
+    min-height: 100vh;
+    min-width: 100vw;
+    height: 100%;
     position: relative;
+    padding: 2rem;
     .card {
         display: flex;
-        height: 75%;
-        width: 75%;
+        height: 500px;
         margin: auto;
         .white {
             background: white;
@@ -122,8 +124,9 @@ img {
 }
 
 .nav {
-    margin-bottom: 1.5rem;
+    min-height: 2rem;
     .bar {
+        min-height: 2rem;
         background: blue;
         position: fixed;
         top: 0;
@@ -139,23 +142,54 @@ img {
                 position: absolute;
                 top: 100%;
                 left: 0;
+                height: 100%;
             }
         }
     }
 }
 
-.options {
-    width: 100%;
-    height: 100%;
+.attrScreen {
+    margin-top: 30vh;
+    height: 70vh;
     display: flex;
-    .option {
+    flex-direction: column;
+    & > div {
+        margin-top: 1.5rem;
+    }
+    .Prompt {
+        border: 1px solid white;
+        display: block;
+        margin: auto;
         flex-grow: 1;
+        font-size: 2rem;
         position: relative;
-        .text {
+    }
+    .options {
+        border: 1px sold white;
+        font-size: 2rem;
+        height: 100%;
+        display: flex;
+        position: relative;
+        flex-grow: 3;
+        flex-flow: row wrap;
+        justify-content: space-around;
+        .option {
+            border: 1px solid white;
+            border-radius: 15%;
+            width: 30%;
+            min-height: 25%;
+            position: relative;
+            .text {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+        .button {
             position: absolute;
-            top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%)
+            top: 110%;
         }
     }
 }
@@ -165,4 +199,24 @@ img {
     top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.Gold {
+    background: #FBC02D;
+}
+
+.Yellow {
+    background: #FFEE58;
+}
+
+.Straw {
+    background: #FFEE58;
+}
+
+.visible {
+
+}
+
+.hidden {
+    display: none;
 }
