@@ -24,11 +24,8 @@ var AppRouter = Parse.Router.extend({
         'taste': 'taste',
         'register': 'register',
         'taste/white': 'white',
-        'taste/red': 'red'
-    },
-    ///loading spinner
-    loading: function() {
-    	React.render( <CircularProgress mode="indeterminate" size={2} />, document.querySelector('.container'))
+        'taste/red': 'red',
+        'log': 'log'
     },
     ///login screen
     login: function() {
@@ -57,6 +54,17 @@ var AppRouter = Parse.Router.extend({
     },
     red: function() {
         React.render(<T.RedTaste/>, document.querySelector('.container'))
+    },
+    log: function() {
+        React.render(<Comp.Loading/>, document.querySelector('.container'))
+        Parse.Cloud.run('userWines', {}, {
+            success: function (result) {
+                React.render(<Comp.Log wines={result} />, document.querySelector('.container'))
+            },
+            error: function (error) {
+                alert(error)
+            }
+        })
     }
     })
 

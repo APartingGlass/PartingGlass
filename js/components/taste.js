@@ -107,7 +107,7 @@ class Options extends React.Component {
                 </div>) 
             } else { return (<div className="options">{options.map((str) => 
                     <Option attr={this.props.attr} node={this} name={str}/>)}
-                <div className='button' onClick={()=> this.submit()}>next</div>
+                <div className='button' onClick={()=> this.submit()}>save</div>
                 </div>) }
     }
 }
@@ -283,7 +283,6 @@ export class WhiteTaste extends M.UI {
             currentScreen: 0,
             screens: [WhiteVisual, WhiteFruitFamily, WhiteFruitQuality, WhiteNonFruit, WhiteMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions, LogWine]
         }
-        this.state.obj['createdBy'] = Parse.User.current()
 	}
 	render() {
 		return (
@@ -376,7 +375,6 @@ export class RedTaste extends M.UI {
             currentScreen: 0,
             screens: [RedVisual, RedFruitFamily, RedFruitQuality, RedNonFruit, RedMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions, LogWine]
         }
-        this.state.obj['createdBy'] = Parse.User.current()
     }
     render() {
         return (

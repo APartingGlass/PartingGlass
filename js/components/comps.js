@@ -3,6 +3,7 @@ import React from 'react'
 import * as T from './taste'
 import _ from 'underscore'
 import $ from 'jquery'
+import * as Img from './images'
 
 var Taster = Parse.User.extend({
 	defaults: {
@@ -19,6 +20,15 @@ var Taster = Parse.User.extend({
 		}, true)
 	}
 })
+
+export class Loading extends M.UI {
+	constructor(props) {
+		super(props)
+	}
+	render() {
+		return(<M.ui.CircularProgress mode="indeterminate" size={2} />)
+	}
+}
 
 export class Login extends React.Component {
 	constructor(props) {
@@ -120,7 +130,8 @@ export class Home extends M.UI {
 		if (time === '10:30') {return 'untimed'} else {return time}
 	}
 	render() {
-		return(<M.ui.Card >
+		return(<div>
+			<M.ui.Card >
           <M.ui.CardTitle title="Taste" subtitle="Run through a single wine, timed or untimed"/>
           <M.ui.CardActions>
             <M.ui.FlatButton onClick={() => window.location.hash = 'taste'} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
@@ -130,7 +141,90 @@ export class Home extends M.UI {
           	Blind-tasting is one of the most challenging tasks any individual can engage themselves in.
           	Here, you'll find a stage to practice. 
           </M.ui.CardText>
-        </M.ui.Card>)
+        </M.ui.Card>
+        <M.ui.Card >
+          <M.ui.CardTitle title="Wine Log" subtitle="Revisit Past Tastings"/>
+          <M.ui.CardActions>
+            <M.ui.FlatButton onClick={() => window.location.hash = 'log'} label="GO" />
+          </M.ui.CardActions>
+          <M.ui.CardText>
+          	Revisit and study past tasting notess
+          </M.ui.CardText>
+        </M.ui.Card>
+        </div>)
+	}
+}
+export class Log extends M.UI {
+	constructor(props) {
+		super(props)
+		this.state = {
+
+		}
+		console.log(props.wines)
+	}
+	parseProminent(obj) {
+		var results = Object.keys(obj).reduce(
+			(a, v, i) => {
+				if (obj[v] === 3) {
+					a.push(v)
+				}
+				return a
+			}
+			,[])
+		if (results.length > 0) {
+			return `Prominently ${results.map((v) => v + ' ')}`
+		} else {return ''}
+	}
+	parseSlight(obj) {
+		var results = Object.keys(obj).reduce(
+			(a, v, i) => {
+				if (obj[v] === 2) {
+					a.push(v)
+				}
+				return a
+			}
+			,[])
+		if (results.length > 0) {
+			return `Slightly ${results.join(', ')}`
+		} else {return ''}
+	}
+	render() {
+		return (<div className='wineLog'>
+			{this.props.wines.map((v) => {
+				var acidity = v.attributes.acidity,
+					alcohol = v.attributes.alcohol,
+					finish = v.attributes.finish,
+					conclusions = v.attributes.conclusions,
+					fruitFamily = v.attributes.fruitFamily,
+					fruitQuality = v.attributes.fruitQuality,
+					mineral = v.attributes.mineral,
+					sugar = v.attributes.sugar,
+					type = v.attributes.type,
+					color = v.attributes.color,
+					nonFruit = v.attributes.nonFruit
+			return (<div className='wine'>
+									<div className='createdAt'>
+										{`${v.createdAt.getMonth()}/${v.createdAt.getDay()}`}
+									</div>
+									<div className='about'>
+										{`${type} wine from ${conclusions.subregion}, ${conclusions.country}
+										Producer: ${conclusions.producer}, Grapes: ${conclusions.grapes}, Vintage: ${conclusions.year}`}
+									</div>
+									<div className='structure'>
+										{`Acidity: ${acidity}, Alcohol: ${alcohol}, Sugar: ${sugar}
+										Finish: ${finish}`}
+									</div>
+									<div className='notes'>
+										<div>{`Color: ${color}`}</div>
+										<div>{`Fruit Qualities: ${this.parseProminent(fruitQuality)} ${this.parseSlight(fruitQuality)}`}</div>
+										<div>{`Fruit Families: ${this.parseProminent(fruitFamily)} ${this.parseSlight(fruitFamily)}`}</div>
+										<div>{`Non-Fruit: ${this.parseProminent(nonFruit)} ${this.parseSlight(nonFruit)}`}</div>
+										<div>{`Mineral and Oak: ${this.parseProminent(mineral)} ${this.parseSlight(mineral)}`}</div>
+									</div>
+								</div>)
+							}
+							)}
+					</div>)
 	}
 }
 
@@ -157,7 +251,7 @@ export class NavBar extends M.UI {
 	constructor(props) {
 		super(props)
 		this.state = {
-			drop: false
+			
 		}
 		var user = Parse.User.current()
 		this.state.user = user
@@ -166,22 +260,11 @@ export class NavBar extends M.UI {
 		Parse.User.logOut()
 		window.location.hash = 'login'
 	}
-	toggle() {
-		this.setState({
-			drop: !this.state.drop
-		})
-	}
 	render() {
 		var username = this.state.user.attributes.username					
 		var menu = this.state.drop ? <div className='signOut' onClick={() => this.logOut()}>Sign Out</div> : <span/>
-		return (<div className='bar'>
-					<div className='logo' onClick={() => window.location.hash = 'home'}>PartingGlass</div>
-					<div className='profile' onClick={() => this.toggle()}>
-						{username}
-						<div className='menu'>
-						{menu}
-						</div>
-					</div>
-				</div>)
+		return (<M.ui.AppBar style={{}} title="Parting Glass"
+  					iconElementLeft={<M.ui.IconButton><Img.Logo /></M.ui.IconButton>}
+  					iconElementRight={<M.ui.FlatButton label={username} />} />)
 	}
 }
