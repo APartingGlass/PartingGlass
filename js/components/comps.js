@@ -5,11 +5,13 @@ import _ from 'underscore'
 import $ from 'jquery'
 import * as Img from './images'
 
+
 var Taster = Parse.User.extend({
 	defaults: {
 		username: '',
 		password: '',
-		email: ''
+		email: '',
+		showHelp: true
 	},
 	validate: function () {
 		var req = ['username', 'email', 'password']
@@ -26,7 +28,7 @@ export class Loading extends M.UI {
 		super(props)
 	}
 	render() {
-		return(<M.ui.CircularProgress mode="indeterminate" size={2} />)
+		return(<M.ui.CircularProgress className="loader" style={{position: 'absolute', top: '50%', left: '50%', 'transform': 'translate(-250%, -250%)'}} mode="indeterminate" size={4} />)
 	}
 }
 
@@ -39,15 +41,19 @@ export class Login extends React.Component {
 		}
 	}
 	login(e) {
+		console.log(this.state.username, this.state.password)
 		e.preventDefault()
 		Parse.User.logIn(this.state.username, this.state.password, {
 			success: (...args) => {
+				console.log('success')
 				window.location.hash = 'home'
 			},
 			error: function(user, error) {
 				alert('We were unable to verify your email and password')
+				console.log(error)
 			}
 		})
+		React.render(<Loading/>, document.querySelector('.container'))
 	}
 	render() {
 		return (<form className='loginForm'>
@@ -102,7 +108,7 @@ export class Register extends React.Component {
 				window.location.hash ='login'
 			},
 			error: (user, error) => {
-				alert(error)
+				console.log(error, user)
 			}
 		})
 	}
@@ -130,9 +136,11 @@ export class Home extends M.UI {
 		if (time === '10:30') {return 'untimed'} else {return time}
 	}
 	render() {
-		return(<div>
-			<M.ui.Card >
-          <M.ui.CardTitle title="Taste" subtitle="Run through a single wine, timed or untimed"/>
+		return(<div className='home'>
+			<M.ui.Card style={{marginBottom: '2rem', maxHeight: '40%'}}>
+          <M.ui.CardMedia overlay={<M.ui.CardTitle title="Taste" subtitle="Run through a single wine, timed or untimed"/>}>
+            <img src="../155.jpg"/>
+          </M.ui.CardMedia>
           <M.ui.CardActions>
             <M.ui.FlatButton onClick={() => window.location.hash = 'taste'} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
             <M.ui.Slider className="timeSlider" name="Time" onChange={(e, val) => this.setState({timer:val})} min={4} defaultValue={6} step={0.5} max={10.5}/>
@@ -142,8 +150,10 @@ export class Home extends M.UI {
           	Here, you'll find a stage to practice. 
           </M.ui.CardText>
         </M.ui.Card>
-        <M.ui.Card >
-          <M.ui.CardTitle title="Wine Log" subtitle="Revisit Past Tastings"/>
+        <M.ui.Card style={{marginBottom: '2rem'}}>
+          <M.ui.CardMedia overlay={<M.ui.CardTitle title="Wine Log" subtitle="Revisit Past Tastings"/>}>
+            <img src="../notebook.jpg"/>
+          </M.ui.CardMedia>
           <M.ui.CardActions>
             <M.ui.FlatButton onClick={() => window.location.hash = 'log'} label="GO" />
           </M.ui.CardActions>
@@ -237,10 +247,10 @@ export class TasteLanding extends M.UI {
 	}
 	render() {
 		return (<div className='card'>
-					<div className='wineSelection red' onClick={() => window.location.hash ='taste/red'}>
+					<div className='wineSelection' style={{}} onClick={() => window.location.hash ='taste/red'}>
 						<div>Red</div>
 					</div>
-					<div className='wineSelection white' onClick={() => window.location.hash ='taste/white'}>
+					<div className='wineSelection' onClick={() => window.location.hash ='taste/white'}>
 						<div>White</div>
 					</div>
 				</div>)
@@ -251,20 +261,40 @@ export class NavBar extends M.UI {
 	constructor(props) {
 		super(props)
 		this.state = {
-			
+			menuOpen: false,
+			classOpacity: 'hard',
 		}
-		var user = Parse.User.current()
-		this.state.user = user
+		window.addEventListener('scroll', () => {
+			if (window.scrollY > 60) {this.soften()}
+			else {this.solidify()} 
+		})  
+	}
+	soften() {
+		this.setState({classOpacity: 'soft'})
+	}
+	solidify() {
+		this.setState({classOpacity: 'hard'})
 	}
 	logOut() {
 		Parse.User.logOut()
 		window.location.hash = 'login'
 	}
-	render() {
-		var username = this.state.user.attributes.username					
-		var menu = this.state.drop ? <div className='signOut' onClick={() => this.logOut()}>Sign Out</div> : <span/>
-		return (<M.ui.AppBar style={{}} title="Parting Glass"
-  					iconElementLeft={<M.ui.IconButton><Img.Logo /></M.ui.IconButton>}
-  					iconElementRight={<M.ui.FlatButton label={username} />} />)
+	goHome() {
+		if (window.location.hash ='home') {
+			$(document).scrollTop()
+		} else {window.location.hash = 'home'}
 	}
+	render() {
+		var help = Parse.User.current().attributes.showHelp ? <div class=''>Help</div> : <span/>
+		return (<M.ui.AppBar className={this.state.classOpacity} style={{background: '#4DD0E1', color: 'red', position: 'fixed', top: '0'}} title="Parting Glass"
+  					iconElementLeft={<M.ui.IconButton onClick={() => this.goHome()}><Img.Logo /></M.ui.IconButton>} 
+  					iconElementRight={<M.ui.IconButton onClick={() => this.logOut()}><Img.LogOut/></M.ui.IconButton>}>
+  					{help}
+  					</M.ui.AppBar>)}
 }
+
+
+
+
+
+

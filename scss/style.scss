@@ -9,6 +9,7 @@
 *:before,
 *:after {
     box-sizing: border-box;
+    transition: all 1s ease;
 }
 /**
  * GRIDS
@@ -90,25 +91,36 @@ img {
  * YOUR CODE HERE
  */
 
+ @media (min-width: 600px) {
+    .home {
+        max-width: 75%;
+        margin: auto;
+    }
+    .card {
+        max-width: 75%;
+        flex-direction: row;
+    }
+ }
+
 .container {
-    background: #1976D2;
+    background: #00838F;
     min-height: 100vh;
     min-width: 100vw;
     height: 100%;
     position: relative;
     padding: 2rem;
+    margin-top: 4rem;
+    transition: background 2s ease;
     .card {
+        background: rgb(66,199,218);
         display: flex;
         height: 500px;
         margin: auto;
-        .white {
-            background: white;
-        }
-        .red {
-            background: red;
-        }
+        flex-direction: column;
         .wineSelection {
+            border: 1px solid black;
             flex-grow: 1;
+            margin: 1rem;
             position: relative;
             & div {
                 position: absolute;
@@ -123,30 +135,6 @@ img {
     }
 }
 
-.nav {
-    min-height: 2rem;
-    .bar {
-        min-height: 2rem;
-        background: blue;
-        position: fixed;
-        top: 0;
-        width: 100%;
-        div {
-            display: inline-block;
-            margin: 0.5rem;
-        }
-        .profile {
-            float: right;
-            position: relative;
-            .menu {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                height: 100%;
-            }
-        }
-    }
-}
 
 .attrScreen {
     margin-top: 30vh;
@@ -213,6 +201,12 @@ img {
     background: #FFEE58;
 }
 
+.soft {
+    opacity: 0.4;
+}
+.hard {
+    opacity: 1;
+}
 .hidden {
     display: none;
 }
