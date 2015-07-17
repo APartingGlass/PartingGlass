@@ -11,6 +11,8 @@
     box-sizing: border-box;
     transition: all 1s ease;
 }
+
+
 /**
  * GRIDS
  */
@@ -53,6 +55,8 @@ $gutter: 2 {
 
 @mixin gridify 4,
 600 {}
+
+
 /**
  * PACE (automatic pre-loader thingy)
  */
@@ -80,6 +84,8 @@ $gutter: 2 {
 .pace-active {
     opacity: 1;
 }
+
+
 /**
  * GENERAL
  */
@@ -87,11 +93,13 @@ $gutter: 2 {
 img {
     max-width: 100%;
 }
+
+
 /**
  * YOUR CODE HERE
  */
 
- @media (min-width: 600px) {
+@media (min-width: 600px) {
     .home {
         max-width: 75%;
         margin: auto;
@@ -100,10 +108,13 @@ img {
         max-width: 75%;
         flex-direction: row;
     }
- }
+}
+
+body {
+    background: #00838F;
+}
 
 .container {
-    background: #00838F;
     min-height: 100vh;
     min-width: 100vw;
     height: 100%;
@@ -112,11 +123,15 @@ img {
     margin-top: 4rem;
     transition: background 2s ease;
     .card {
-        background: rgb(66,199,218);
+        background: rgb(66, 199, 218);
         display: flex;
         height: 500px;
         margin: auto;
         flex-direction: column;
+        .flexcont {
+            flex-grow: 1;
+            flex-basis: 50%;
+        }
         .wineSelection {
             border: 1px solid black;
             flex-grow: 1;
@@ -134,7 +149,6 @@ img {
         }
     }
 }
-
 
 .attrScreen {
     margin-top: 30vh;
@@ -167,12 +181,6 @@ img {
             width: 30%;
             min-height: 25%;
             position: relative;
-            .text {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
         }
         .button {
             position: absolute;
@@ -185,6 +193,13 @@ img {
 .loginForm {
     position: absolute;
     top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.text {
+    position: absolute;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -204,9 +219,11 @@ img {
 .soft {
     opacity: 0.4;
 }
+
 .hard {
     opacity: 1;
 }
+
 .hidden {
     display: none;
 }

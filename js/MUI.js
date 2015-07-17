@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import _mui from 'material-ui'
+
 var ThemeManager = new _mui.Styles.ThemeManager()
 ThemeManager.setTheme(ThemeManager.types.LIGHT)
 

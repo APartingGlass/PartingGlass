@@ -32,7 +32,7 @@ export class Loading extends M.UI {
 	}
 }
 
-export class Login extends React.Component {
+export class Login extends M.UI {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -56,12 +56,28 @@ export class Login extends React.Component {
 		React.render(<Loading/>, document.querySelector('.container'))
 	}
 	render() {
-		return (<form className='loginForm'>
-					<input className="userField" placeholder='username' value={this.state.username} onChange={(e) => this.setState({username: e.target.value, email:e.target.value})}/>
-					<input className="passField" placeholder='password' type='password' value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} />
-					<div onClick={(e) => this.login(e)}>login</div> 
-					<div onClick={(e) => window.location.hash = 'register'} >Register</div>
-				</form>)
+		var inputStyle = {
+			marginTop: '2rem',
+			border: '1px solid white'
+		}
+		var buttonStyle = {
+			flexGrow: '1',
+			position: 'relative'
+		}
+		return (<div className='card'>
+					<div style={{flexDirection: 'column', justifyContent: 'space-between', maxWidth: '50%', margin: 'auto', paddingTop: '2rem'}}className='flexcont'>
+						<input style ={inputStyle}className="userField" placeholder='username' type='text' value={this.state.username} onChange={(e) => this.setState({username: e.target.value, email:e.target.value})}/>
+						<input style ={inputStyle}className="passField" placeholder='password' type='password' value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} />
+					</div>
+					<div style={{display: 'flex', flexDirection: 'row'}}className='flexcont'>
+						<div style={buttonStyle} className='button' onClick={(e) => this.login(e)}>
+						<div className='text'>login</div>
+						</div> 
+						<div style={buttonStyle} className='button' onClick={(e) => window.location.hash = 'register'} >
+						<div className='text'>Register</div>
+						</div>
+					</div>
+				</div>)
 	}
 }
 
