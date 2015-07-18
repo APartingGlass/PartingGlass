@@ -7,6 +7,7 @@ import React from 'react'
 import * as Comp from './components/comps'
 import * as T from './components/taste'
 
+window.$ = $
 ///initialize Parse
 Parse.$ = $
 Parse.initialize("hFTYt5zZR2erwzvgvK2CTn6boEn3wXPTwQryJRTg", "HQhZqHrGATYYNw1YRa9mqDzjKH9WVa29L6uLmzqX");
@@ -41,11 +42,6 @@ var AppRouter = Parse.Router.extend({
             React.render( <Comp.Home />, document.querySelector('.container'))
         } else {window.location.hash = 'login'}
     },
-    ///tasting screen with landing and stages
-    taste: function() {
-		if(Parse.User.current()) {
-            React.render( <Comp.TasteLanding />, document.querySelector('.container'))
-        } else {window.location.hash = 'login'} },
     register: function () {
         React.render(<Comp.Register />, document.querySelector('.container'))
     },

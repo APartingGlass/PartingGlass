@@ -29,7 +29,7 @@ class Prompt extends React.Component {
     render() {
         var prompt = this.props.prompt
         return (<div className="Prompt">
-            <div className='text'>{prompt}</div>
+            {prompt}
             </div>)
     }
 }
@@ -43,10 +43,12 @@ class Option extends React.Component {
         attribute = this.props.attr
         newState[attribute] = this.props.name
         this.props.node.setState(newState)
+        console.log(this.props.node.state)
     }
     render() {
-        var category = 'option ' + this.props.name
-        return (<div onClick={() => this.update()} className={category} >
+        var name = this.props.name,
+            status = this.props.styleClass
+        return (<div onClick={() => this.update()} className={`option invariant ${status}`}>
             <div className='text'>{this.props.name}</div>
             </div>)
     }
@@ -65,7 +67,8 @@ class VariantOption extends React.Component {
         this.props.node.setState(newState)
     }
     render() {
-        return (<div className='option variantOp' onClick={() => this.update()}>
+        var status = this.props.styleClass
+        return (<div className={`option variant ${status}`} onClick={() => this.update()}>
             <div className='text'>{this.props.name}</div>
             </div>)
     }
@@ -74,7 +77,8 @@ class VariantOption extends React.Component {
 class Options extends React.Component {
     constructor(props){
         super(props)
-        this.state = {}
+        this.state = {
+        }
         if (this.props.variant) {
             this.props.options.forEach((str) => this.state[str] = 0)
         }
@@ -86,28 +90,42 @@ class Options extends React.Component {
         this.props.wine.set(newState)
         console.log(this.props.wine)
         this.nextScreen()
+        $('html, body').animate({scrollTop: $(document).height()}, 500)
     }
     submit() {
         this.props.wine.set(this.state)
         console.log(this.props.wine)
         this.nextScreen()
+        $('html, body').animate({scrollTop: $(document).height()}, 500)
     }
     nextScreen() {
         this.props.controller.setState({currentScreen: this.props.controller.state.currentScreen+1})
         console.log('next screen')
+    }
+    classifyInvariant(name) {
+        if (this.state[this.props.attr] === name) {
+            return 'selected'
+        } else {return ''}
+    }
+    classifyVariant(name) {
+        if (this.state[name] < 1) {
+            return ''
+        } else if (this.state[name] === 2) {
+            return 'selected prominent'
+        } else {return 'selected'}
     }
     render() {
         var attribute = this.props.attr,
             variant = this.props.variant,
             options = this.props.options
         if (variant === true) { 
-            return (<div className="options">{options.map((str) => 
-                    <VariantOption node={this} prevState={this.state} name={str}/>)}
-                <div className='button' onClick={() => this.submitVariant()}>next</div>
+            return (<div className={`options`}>{options.map((str) => 
+                    <VariantOption styleClass={this.classifyVariant(str)} node={this} prevState={this.state} name={str}/>)}
+                <div className='button' onClick={() => this.submitVariant()}>V</div>
                 </div>) 
-            } else { return (<div className="options">{options.map((str) => 
-                    <Option attr={this.props.attr} node={this} name={str}/>)}
-                <div className='button' onClick={()=> this.submit()}>save</div>
+            } else { return (<div className={`options`}>{options.map((str) => 
+                    <Option styleClass={this.classifyInvariant(str)} attr={this.props.attr} node={this} name={str}/>)}
+                <div className='button' onClick={()=> this.submit()}>V</div>
                 </div>) }
     }
 }
@@ -266,6 +284,7 @@ class Conclusions extends React.Component {
     render() {
         return(<div className={`attrScreen ${this.props.className || ''}`}>
                 <input onChange={() =>this.setConclusions('country')} ref='country' placeholder='Country'/>
+                <input onChange={() => this.setConclusions('region')} ref='region'placeholder='Region'/>
                 <input onChange={() => this.setConclusions('subregion')} ref='subregion' placeholder='Subregion'/>
                 <input onChange={() => this.setConclusions('grapes')} ref='grapes'placeholder='Grape/s'/>
                 <input onChange={() => this.setConclusions('year')} ref='year'placeholder='Year'/>

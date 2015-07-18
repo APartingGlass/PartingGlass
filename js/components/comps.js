@@ -28,7 +28,8 @@ export class Loading extends M.UI {
 		super(props)
 	}
 	render() {
-		return(<M.ui.CircularProgress className="loader" style={{position: 'absolute', top: '50%', left: '50%', 'transform': 'translate(-250%, -250%)'}} mode="indeterminate" size={4} />)
+		return(
+			<M.ui.CircularProgress className="loader text" style={{position: 'absolute', top: '50%', left: '50%', 'transform': 'translate(-250%, -250%)'}} mode="indeterminate" size={4} />)
 	}
 }
 
@@ -151,6 +152,9 @@ export class Home extends M.UI {
 		var time = (this.state.timer%1 ===0) ? (Math.floor(this.state.timer) +':00') : (Math.floor(this.state.timer) +':30')
 		if (time === '10:30') {return 'untimed'} else {return time}
 	}
+	taste() {
+		React.render(<TasteLanding time={this.state.timer} />, document.querySelector('.container'))
+	}
 	render() {
 		return(<div className='home'>
 			<M.ui.Card style={{marginBottom: '2rem', maxHeight: '40%'}}>
@@ -158,7 +162,7 @@ export class Home extends M.UI {
             <img src="../155.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
-            <M.ui.FlatButton onClick={() => window.location.hash = 'taste'} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
+            <M.ui.FlatButton onClick={() => this.taste()} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
             <M.ui.Slider className="timeSlider" name="Time" onChange={(e, val) => this.setState({timer:val})} min={4} defaultValue={6} step={0.5} max={10.5}/>
           </M.ui.CardActions>
           <M.ui.CardText>
@@ -184,7 +188,11 @@ export class Log extends M.UI {
 	constructor(props) {
 		super(props)
 		this.state = {
-
+			weatherApi: {
+			url:'http://www.ncdc.noaa.gov/cdo-web/api/v2/', 
+			data:{}, 
+			headers:{ token: 'xMyxWDfOEQGzuVPXnVHEoyCdoQcEvcfZ' }
+			}
 		}
 		console.log(props.wines)
 	}
@@ -262,11 +270,11 @@ export class TasteLanding extends M.UI {
 		}
 	}
 	render() {
-		return (<div className='card'>
-					<div className='wineSelection' style={{}} onClick={() => window.location.hash ='taste/red'}>
+		return (<div style={{height: '50%', width: '50%', alignItems: 'center'}} className='card text'>
+					<div className='wineSelection card' style={{background: 'radial-gradient(ellipse at center, rgba(241,111,92,1) 0%, rgba(246,41,12,1) 0%, rgba(240,47,23,1) 4%, rgba(248,80,50,1) 31%, rgba(211,47,47,1) 100%)'}} onClick={() => window.location.hash ='taste/red'}>
 						<div>Red</div>
 					</div>
-					<div className='wineSelection' onClick={() => window.location.hash ='taste/white'}>
+					<div className='wineSelection card' style={{background: 'radial-gradient(ellipse at center, rgba(241,231,103,1) 0%, rgba(254,182,69,1) 100%)'}} onClick={() => window.location.hash ='taste/white'}>
 						<div>White</div>
 					</div>
 				</div>)
@@ -295,22 +303,19 @@ export class NavBar extends M.UI {
 		Parse.User.logOut()
 		window.location.hash = 'login'
 	}
+	scrollTop() {
+		$('html, body').animate({scrollTop: 0}, 500)
+	}
 	goHome() {
 		if (window.location.hash ='home') {
-			$(document).scrollTop()
+			this.scrollTop()
 		} else {window.location.hash = 'home'}
 	}
 	render() {
-		var help = Parse.User.current().attributes.showHelp ? <div class=''>Help</div> : <span/>
 		return (<M.ui.AppBar className={this.state.classOpacity} style={{background: '#4DD0E1', color: 'red', position: 'fixed', top: '0'}} title="Parting Glass"
   					iconElementLeft={<M.ui.IconButton onClick={() => this.goHome()}><Img.Logo /></M.ui.IconButton>} 
   					iconElementRight={<M.ui.IconButton onClick={() => this.logOut()}><Img.LogOut/></M.ui.IconButton>}>
-  					{help}
   					</M.ui.AppBar>)}
 }
-
-
-
-
 
 
