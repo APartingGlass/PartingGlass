@@ -153,13 +153,14 @@ export class Home extends M.UI {
 		if (time === '10:30') {return 'untimed'} else {return time}
 	}
 	taste() {
+		window.location.hash = 'taste'
 		React.render(<TasteLanding time={this.state.timer} />, document.querySelector('.container'))
 	}
 	render() {
 		return(<div className='home'>
 			<M.ui.Card className='card' style={{marginBottom: '2rem'}}>
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Taste" subtitle="Run through a single wine, timed or untimed"/>}>
-            <img src="../155.jpg"/>
+            <img src="../wines.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
             <M.ui.FlatButton onClick={() => this.taste()} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
@@ -172,7 +173,7 @@ export class Home extends M.UI {
         </M.ui.Card>
         <M.ui.Card className='card' style={{marginBottom: '2rem'}}>
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Wine Log" subtitle="Revisit Past Tastings"/>}>
-            <img src="../notebook.jpg"/>
+            <img src="../barrels.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
             <M.ui.FlatButton onClick={() => window.location.hash = 'log'} label="GO" />
@@ -324,9 +325,11 @@ export class NavBar extends M.UI {
 		$('html, body').animate({scrollTop: 0}, 500)
 	}
 	goHome() {
-		if (window.location.hash ='home') {
+		if (window.location.hash === '#home') {
 			this.scrollTop()
-		} else {window.location.hash = 'home'}
+		} else {
+			window.location.hash = 'home'
+		}
 	}
 	render() {
 		return (<M.ui.AppBar className={this.state.classOpacity} style={{background: '#4DD0E1', color: 'red', position: 'fixed', top: '0'}} title="Parting Glass"

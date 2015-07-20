@@ -127,7 +127,6 @@ body {
     .card {
         background: rgb(66, 199, 218);
         display: flex;
-        max-height: 500px;
         margin: auto;
         flex-direction: column;
         .flexcont {
@@ -233,6 +232,14 @@ body {
             left: 50%;
             top: 110%;
         }
+    }
+}
+
+.wineLog {
+    display: flex;
+    flex-wrap: wrap;
+    .wine {
+        flex-grow: 1;
     }
 }
 
