@@ -22,10 +22,7 @@ var AppRouter = Parse.Router.extend({
         'login': 'login',
         'home': 'home',
         'profile': 'profile',
-        'taste': 'taste',
         'register': 'register',
-        'taste/white': 'white',
-        'taste/red': 'red',
         'log': 'log'
     },
     ///login screen
@@ -44,12 +41,6 @@ var AppRouter = Parse.Router.extend({
     },
     register: function () {
         React.render(<Comp.Register />, document.querySelector('.container'))
-    },
-    white: function () {
-        React.render(<T.WhiteTaste />, document.querySelector('.container'))
-    },
-    red: function() {
-        React.render(<T.RedTaste/>, document.querySelector('.container'))
     },
     log: function() {
         React.render(<Comp.Loading/>, document.querySelector('.container'))

@@ -43,7 +43,6 @@ class Option extends React.Component {
         attribute = this.props.attr
         newState[attribute] = this.props.name
         this.props.node.setState(newState)
-        console.log(this.props.node.state)
     }
     render() {
         var name = this.props.name,
@@ -88,13 +87,11 @@ class Options extends React.Component {
             attribute = this.props.attr
         newState[attribute] = this.state
         this.props.wine.set(newState)
-        console.log(this.props.wine)
         this.nextScreen()
         $('html, body').animate({scrollTop: $(document).height()}, 500)
     }
     submit() {
         this.props.wine.set(this.state)
-        console.log(this.props.wine)
         this.nextScreen()
         $('html, body').animate({scrollTop: $(document).height()}, 500)
     }
@@ -262,17 +259,27 @@ class Conclusions extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-        }
+
+        }  
     }
+    // componentDidMount() {
+    //     this.state.country = new google.maps.places.Autocomplete((document.querySelector('.country')))
+    //     this.state.region = new google.maps.places.Autocomplete((document.querySelector('.region')))
+    //     this.state.subregion = new google.maps.places.Autocomplete((document.querySelector('.subregion'))) 
+    // }
     setConclusions(attr) {
         var newState = {}
         newState[attr] = React.findDOMNode(this.refs[attr]).value
         this.setState(newState)
     }
     confirm() {
+        // console.log(this.state.country.getPlace(), 'country')
+        // console.log(this.state.region.getPlace(), 'region')
+        // console.log(this.state.subregion.getPlace(), 'subregion')        
         this.props.wine.set({
             conclusions: this.state
         })
+        console.log('wineset')
         this.nextScreen()
     }
     nextScreen() {
@@ -282,10 +289,11 @@ class Conclusions extends React.Component {
         console.log('next screen')
     }
     render() {
+        var mapStyle = this.state.mapOpen
         return(<div className={`attrScreen ${this.props.className || ''}`}>
-                <input onChange={() =>this.setConclusions('country')} ref='country' placeholder='Country'/>
-                <input onChange={() => this.setConclusions('region')} ref='region'placeholder='Region'/>
-                <input onChange={() => this.setConclusions('subregion')} ref='subregion' placeholder='Subregion'/>
+                <input className='country' placeholder='Country'/>
+                <input className='region'  placeholder='Region'/>
+                <input className='subregion'  placeholder='Subregion'/>
                 <input onChange={() => this.setConclusions('grapes')} ref='grapes'placeholder='Grape/s'/>
                 <input onChange={() => this.setConclusions('year')} ref='year'placeholder='Year'/>
                 <input onChange={() => this.setConclusions('producer')} ref='producer'placeholder='Producer'/>
@@ -302,10 +310,57 @@ export class WhiteTaste extends M.UI {
             currentScreen: 0,
             screens: [WhiteVisual, WhiteFruitFamily, WhiteFruitQuality, WhiteNonFruit, WhiteMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions, LogWine]
         }
+        this.state.time = (this.props.time*60)
 	}
+    componentDidMount() {
+        if (this.props.time < 10.5) {
+            this.state.countdown = setInterval(() => this.subtract(), 1000)
+        }
+    }
+    componentWillUnmount() {
+        clearInterval(this.state.countdown)
+    }
+    subtract() {
+        this.setState({time: (this.state.time-1)})
+        if (this.state.time === 0) {
+            clearInterval(this.state.countdown)
+        }
+        this.checkClock()
+    }
+    checkClock() {
+        if (this.state.time%30 === 0) {
+            this.setState({minute: true})
+        } else {this.setState({minute: false})}
+    }
 	render() {
+        var percRemain = (this.state.time%30)/30*100,
+        timerStyle = {
+                position: 'fixed',
+                left: '50%',
+                bottom: '90%',
+                height: '3px',
+                width: `${percRemain}vw`,
+                transform: 'translateX(-50%)',
+                backgroundColor: 'red',
+                transition: 'width 0.5s ease'
+        },
+        varclockDisplay = this.state.minute ? 1 : 0,
+        displayStyle = {
+            opacity: varclockDisplay,
+            transition: 'opacity 0.5s ease',
+            position: 'fixed',
+            bottom: '80%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            fontSize: '2rem',
+            color: 'red'
+        },
+        minutes = Math.floor(this.state.time/60),
+        seconds = (this.state.time%60 < 10) ? ('0'+ (this.state.time%60)) : this.state.time%60
 		return (
             <div>
+            <div className='timer' style={timerStyle}></div>
+            <div className='timeDisplay' style={displayStyle}>{minutes}:{seconds}</div>
             { this.state.screens.map((scrn, index) => {
                 let props = {
                     className: index <= this.state.currentScreen ? 'visible' : 'hidden',

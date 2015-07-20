@@ -157,7 +157,7 @@ export class Home extends M.UI {
 	}
 	render() {
 		return(<div className='home'>
-			<M.ui.Card style={{marginBottom: '2rem', maxHeight: '40%'}}>
+			<M.ui.Card className='card' style={{marginBottom: '2rem'}}>
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Taste" subtitle="Run through a single wine, timed or untimed"/>}>
             <img src="../155.jpg"/>
           </M.ui.CardMedia>
@@ -170,7 +170,7 @@ export class Home extends M.UI {
           	Here, you'll find a stage to practice. 
           </M.ui.CardText>
         </M.ui.Card>
-        <M.ui.Card style={{marginBottom: '2rem'}}>
+        <M.ui.Card className='card' style={{marginBottom: '2rem'}}>
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Wine Log" subtitle="Revisit Past Tastings"/>}>
             <img src="../notebook.jpg"/>
           </M.ui.CardMedia>
@@ -179,6 +179,17 @@ export class Home extends M.UI {
           </M.ui.CardActions>
           <M.ui.CardText>
           	Revisit and study past tasting notess
+          </M.ui.CardText>
+        </M.ui.Card>
+        <M.ui.Card className='card' style={{marginBottom: '2rem'}}>
+          <M.ui.CardMedia overlay={<M.ui.CardTitle title="Flash Cards" subtitle="Create your own study material or randomly generate questions!"/>}>
+            <img src="../books.jpg"/>
+          </M.ui.CardMedia>
+          <M.ui.CardActions>
+            <M.ui.FlatButton onClick={() => window.location.hash = 'cards'} label="GO" />
+          </M.ui.CardActions>
+          <M.ui.CardText>
+          	Study and retain facts
           </M.ui.CardText>
         </M.ui.Card>
         </div>)
@@ -269,12 +280,18 @@ export class TasteLanding extends M.UI {
 			wine: null
 		}
 	}
+	whiteTaste() {
+		React.render(<T.WhiteTaste time={this.props.time} />, document.querySelector('.container'))
+	}
+	redTaste() {
+		React.render(<T.RedTaste time={this.props.time} />, document.querySelector('.container'))
+	}
 	render() {
 		return (<div style={{height: '50%', width: '50%', alignItems: 'center'}} className='card text'>
-					<div className='wineSelection card' style={{background: 'radial-gradient(ellipse at center, rgba(241,111,92,1) 0%, rgba(246,41,12,1) 0%, rgba(240,47,23,1) 4%, rgba(248,80,50,1) 31%, rgba(211,47,47,1) 100%)'}} onClick={() => window.location.hash ='taste/red'}>
+					<div className='wineSelection card' style={{background: 'radial-gradient(ellipse at center, rgba(241,111,92,1) 0%, rgba(246,41,12,1) 0%, rgba(240,47,23,1) 4%, rgba(248,80,50,1) 31%, rgba(211,47,47,1) 100%)'}} onClick={() => this.redTaste()}>
 						<div>Red</div>
 					</div>
-					<div className='wineSelection card' style={{background: 'radial-gradient(ellipse at center, rgba(241,231,103,1) 0%, rgba(254,182,69,1) 100%)'}} onClick={() => window.location.hash ='taste/white'}>
+					<div className='wineSelection card' style={{background: 'radial-gradient(ellipse at center, rgba(241,231,103,1) 0%, rgba(254,182,69,1) 100%)'}} onClick={() => this.whiteTaste()}>
 						<div>White</div>
 					</div>
 				</div>)
