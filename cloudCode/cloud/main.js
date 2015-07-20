@@ -17,3 +17,15 @@ Parse.Cloud.define('userWines', function(request, response) {
     }
   })
 })
+
+Parse.Cloud.define('randomUserWine', function(request, response) {
+  return var randomWine = Parse.Cloud.run('userWines', {}, {
+            success: function (result) {
+              randomIndex = Math.floor(result.length * Math.random())
+              response.success(result[randomIndex])
+            },
+            error: function (error) {
+                alert(error)
+            }
+        })
+})

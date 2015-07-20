@@ -449,10 +449,57 @@ export class RedTaste extends M.UI {
             currentScreen: 0,
             screens: [RedVisual, RedFruitFamily, RedFruitQuality, RedNonFruit, RedMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions, LogWine]
         }
+        this.state.time = (this.props.time*60)
+    }
+    componentDidMount() {
+        if (this.props.time < 10.5) {
+            this.state.countdown = setInterval(() => this.subtract(), 1000)
+        }
+    }
+    componentWillUnmount() {
+        clearInterval(this.state.countdown)
+    }
+    subtract() {
+        this.setState({time: (this.state.time-1)})
+        if (this.state.time === 0) {
+            clearInterval(this.state.countdown)
+        }
+        this.checkClock()
+    }
+    checkClock() {
+        if (this.state.time%30 === 0) {
+            this.setState({minute: true})
+        } else {this.setState({minute: false})}
     }
     render() {
+        var percRemain = (this.state.time%30)/30*100,
+        timerStyle = {
+                position: 'fixed',
+                left: '50%',
+                bottom: '90%',
+                height: '3px',
+                width: `${percRemain}vw`,
+                transform: 'translateX(-50%)',
+                backgroundColor: 'red',
+                transition: 'width 0.5s ease'
+        },
+        varclockDisplay = this.state.minute ? 1 : 0,
+        displayStyle = {
+            opacity: varclockDisplay,
+            transition: 'opacity 0.5s ease',
+            position: 'fixed',
+            bottom: '80%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            fontSize: '2rem',
+            color: 'red'
+        },
+        minutes = Math.floor(this.state.time/60),
+        seconds = (this.state.time%60 < 10) ? ('0'+ (this.state.time%60)) : this.state.time%60
         return (
             <div>
+            <div className='timer' style={timerStyle}></div>
+            <div className='timeDisplay' style={displayStyle}>{minutes}:{seconds}</div>
             { this.state.screens.map((scrn, index) => {
                 let props = {
                     className: index <= this.state.currentScreen ? 'visible' : 'hidden',
