@@ -6,6 +6,7 @@ import $ from 'jquery'
 import React from 'react'
 import * as Comp from './components/comps'
 import * as T from './components/taste'
+import * as Cards from './components/cards'
 
 window.$ = $
 ///initialize Parse
@@ -23,7 +24,8 @@ var AppRouter = Parse.Router.extend({
         'home': 'home',
         'profile': 'profile',
         'register': 'register',
-        'log': 'log'
+        'log': 'log',
+        'cards': 'cards'
     },
     ///login screen
     login: function() {
@@ -52,6 +54,9 @@ var AppRouter = Parse.Router.extend({
                 alert(error)
             }
         })
+    },
+    cards: function() {
+        React.render(<Cards.CardView/>, document.querySelector('.container'))
     }
     })
 
