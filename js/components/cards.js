@@ -1,6 +1,24 @@
 import React from 'react'
 import * as M from '../MUI'
 
+var Deck = Parse.Object.extend({
+    initialize: function() {
+        console.log('new deck')
+        this.set('createdBy', Parse.User.current())
+    },
+    className: 'Decks',
+
+})
+
+var Card = Parse.Object.extend({
+    initialize: function() {
+        console.log('new card')
+        this.set('createdBy', Parse.User.current())
+    },
+    className: 'Cards',
+
+})
+
 var acidityLevel = (conclusions, acidity) => {
     return {
         question: `What is the acidity level of ${conclusions.grapes} from ${conclusions.subregion}?`,
@@ -36,55 +54,77 @@ var genRandomQ = function(wine) {
         randomIndex = Math.floor(Math.random() * questions.length)
     return questions[randomIndex]
 }
-
-
-export class CardView extends M.UI {
+class CardsView extends M.UI {
 	constructor(props) {
 		super(props)
 		this.state = {
+			content: []
 		}
 	}
-	generateQuestion(wine) {
-		console.log(wine)
-		this.setState({
-			randomCard: genRandomQ(wine)
-		})
+	componentDidMount() {
+		this.pullCards()
 	}
-	randomWineQuestion() { 
-		var promise = Parse.Cloud.run('randomUserWine', {}, {
-            success: function (result) {
-            },
-            error: function (error) {
-                alert(error)
-            }
-        })
-        promise.then((result) => this.generateQuestion(result))
+	pullCards() {
+		this.state.query = new Parse.Query('Cards')
+		this.state.query.equalTo('deck', this.props.deck)
+		this.updateCards()
+	}
+	updateCards() {
+		this.state.query.find({
+			success: function(results) {
+
+			},
+			error: function(error) {
+				console.log(error)
+			}
+		}).then((results) => this.setState({
+			content: results
+		}))
+	}
+	newCard() {
+		this.newCard = new Card
+		this.newCard.set('deck', this.props.deck)
+		this.newCard.set('question', this.state.question)
+		this.newCard.set('answer', this.state.answer)
+		this.newCard.save()
+		this.updateCards
+	}
+	updateState(e, prop) {
+		var newState = {}
+		newState[prop] = e.target.value
+		this.setState(newState)
 	}
 	render() {
-		var randomCard = this.state.randomCard ? <FlashCard content={this.state.randomCard}/> : <span />
-		return(<div>
-				<M.ui.Card className='card'>
-        		<M.ui.CardTitle title="Random Card" subtitle="Automatically Generate A Card from your previous tastings"/>
-   	    		<M.ui.CardActions>
-    		    <M.ui.FlatButton onClick={() => this.randomWineQuestion()} label='Generate'/>
-    		    </M.ui.CardActions>
-        		</M.ui.Card>
-        		{randomCard}
-				<div className='decks grid grid-2-400 grid-4-600'>
-
-				</div>
+		return (<div className='grid grid-2-400 grid-4-600'>
+				<M.ui.Card>
+					<input onChange={(e) => this.updateState(e, 'question')} placeholder='question'/>
+					<input onChange={(e) => this.updateState(e, 'answer')} placeholder='answer'/>
+					<M.ui.CardActions>
+    				<M.ui.FlatButton onClick={() => this.newCard()} label='New Card'/>
+    				</M.ui.CardActions>	
+				</M.ui.Card>
+				{this.state.content.map((card) => <FlashCard content={card.attributes}/>)}
 			</div>)
 	}
-
 }
 
-class Deck extends M.UI {
+class DeckBox extends M.UI {
 	constructor(props) {
 		super(props)
+		this.state = {
+			deck: this.props.deck
+		}
+	}
+	pullCards() {
+		React.render(<CardsView deck={this.state.deck}/>, document.querySelector('.container'))
 	}
 	render() {
-		return(
-			<FlashCard/>
+		return(<M.ui.Card> 
+			<M.ui.CardTitle title={this.props.deck.attributes.name} />
+			<M.ui.CardActions>
+    		<M.ui.FlatButton onClick={() => this.pullCards()} label='Study'/>
+    		</M.ui.CardActions>
+			</M.ui.Card>
 			)
 	}
 }
@@ -116,4 +156,82 @@ class FlashCard extends M.UI {
           			</M.ui.CardText>
 			</M.ui.Card>)
 	}
+}
+
+class DeckGrid extends M.UI {
+	constructor(props) {
+		super(props)
+		this.state = {
+			content: []
+		}
+	}
+	componentDidMount() {
+		this.state.query = new Parse.Query('Decks')
+		this.checkforDecks()
+	}
+	checkforDecks() {
+		this.state.query.find({
+			success: function(results) {
+			},
+			error: function(error) {
+				console.log(error)
+			}
+		}).then((results) => this.setState({content: results}))
+	}
+	newDeck() {
+		var name = prompt('What would you like to name your deck?')
+		this.newDeck = new Deck
+		if (name != null) {
+			this.newDeck.set('name', name)
+		}
+		this.newDeck.save()
+		this.checkforDecks()
+	}
+	render() {
+		return (<div style={{marginTop: '3rem'}}className='decks grid grid-2-400 grid-4-600'>
+				<M.ui.Card>
+					<M.ui.CardActions>
+    				<M.ui.FlatButton onClick={() => this.newDeck()} label='New Deck'/>
+    				</M.ui.CardActions>					
+				</M.ui.Card>
+					{this.state.content.map((v) => <DeckBox deck={v}/>)}
+				</div>)
+	}
+}
+
+export class DecksView extends M.UI {
+	constructor(props) {
+		super(props)
+		this.state = {
+		}
+	}
+	generateQuestion(wine) {
+		this.setState({
+			randomCard: genRandomQ(wine)
+		})
+	}
+	randomWineQuestion() { 
+		var promise = Parse.Cloud.run('randomUserWine', {}, {
+            success: function (result) {
+            },
+            error: function (error) {
+                alert(error)
+            }
+        })
+        promise.then((result) => this.generateQuestion(result))
+	}
+	render() {
+		var randomCard = this.state.randomCard ? <FlashCard content={this.state.randomCard}/> : <span />
+		return(<div>
+				<M.ui.Card className='card'>
+        		<M.ui.CardTitle title="Random Card" subtitle="Automatically Generate A Card from your previous tastings"/>
+   	    		<M.ui.CardActions>
+    		    <M.ui.FlatButton onClick={() => this.randomWineQuestion()} label='Generate'/>
+    		    </M.ui.CardActions>
+        		</M.ui.Card>
+        		{randomCard}
+        		<DeckGrid/>
+			</div>)
+	}
+
 }

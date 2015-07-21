@@ -56,7 +56,7 @@ var AppRouter = Parse.Router.extend({
         })
     },
     cards: function() {
-        React.render(<Cards.CardView/>, document.querySelector('.container'))
+        React.render(<Cards.DecksView type='Decks'/>, document.querySelector('.container'))
     }
     })
 
