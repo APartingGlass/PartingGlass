@@ -25,7 +25,7 @@ var AppRouter = Parse.Router.extend({
         'profile': 'profile',
         'register': 'register',
         'log': 'log',
-        'cards': 'cards'
+        'decks': 'decks'
     },
     ///login screen
     login: function() {
@@ -55,7 +55,7 @@ var AppRouter = Parse.Router.extend({
             }
         })
     },
-    cards: function() {
+    decks: function() {
         React.render(<Cards.DecksView type='Decks'/>, document.querySelector('.container'))
     }
     })

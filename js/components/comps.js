@@ -29,7 +29,7 @@ export class Loading extends M.UI {
 	}
 	render() {
 		return(
-			<M.ui.CircularProgress className="loader text" style={{position: 'absolute', top: '50%', left: '50%', 'transform': 'translate(-250%, -250%)'}} mode="indeterminate" size={4} />)
+			<M.ui.CircularProgress className="loader text" style={{position: 'absolute', top: '50%', left: '50%'}} mode="indeterminate" size={4} />)
 	}
 }
 
@@ -38,51 +38,54 @@ export class Login extends M.UI {
 		super(props)
 		this.state = {
 			username: '',
-			password: ''
+			password: '',
+			transition: 'none',
+			valid: true
 		}
 	}
-	login(e) {
-		console.log(this.state.username, this.state.password)
-		e.preventDefault()
-		Parse.User.logIn(this.state.username, this.state.password, {
-			success: (...args) => {
-				console.log('success')
-				window.location.hash = 'home'
-			},
-			error: function(user, error) {
-				alert('We were unable to verify your email and password')
-				console.log(error)
-			}
-		})
-		React.render(<Loading/>, document.querySelector('.container'))
+	invalid() {
+		clearTimeout(this.state.timeout)
+		this.setState({valid: false})
+		this.state.timeout = setTimeout(() => {
+			this.setState({valid: true, transition: 'background-color 1s ease'})
+			setTimeout(() => {
+				this.setState({transition: 'none'})
+			}, 1100)
+		}, 3000)
+	}
+ 	login(e) {
+    if (!!this.state.username && !!this.state.username) {
+        Parse.User.logIn(this.state.username, this.state.password, {
+            success: (...args) => {
+                console.log('success')
+                window.location.hash = 'home'
+            },
+            error: function(user, error) {
+                alert('We were unable to verify your email and password')
+                React.render(<Login /> , document.querySelector('.container'))
+            }
+        })
+        React.render( < Loading / > , document.querySelector('.container'))
+    } else {this.invalid() }
 	}
 	render() {
-		var inputStyle = {
-			marginTop: '2rem',
-			border: '1px solid white'
-		}
-		var buttonStyle = {
-			flexGrow: '1',
-			position: 'relative'
-		}
-		return (<div className='card'>
-					<div style={{flexDirection: 'column', justifyContent: 'space-between', maxWidth: '50%', margin: 'auto', paddingTop: '2rem'}}className='flexcont'>
-						<input style ={inputStyle}className="userField" placeholder='username' type='text' value={this.state.username} onChange={(e) => this.setState({username: e.target.value, email:e.target.value})}/>
-						<input style ={inputStyle}className="passField" placeholder='password' type='password' value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} />
-					</div>
-					<div style={{display: 'flex', flexDirection: 'row'}}className='flexcont'>
-						<div style={buttonStyle} className='button' onClick={(e) => this.login(e)}>
-						<div className='text'>login</div>
-						</div> 
-						<div style={buttonStyle} className='button' onClick={(e) => window.location.hash = 'register'} >
-						<div className='text'>Register</div>
-						</div>
-					</div>
-				</div>)
+		var boxColor = this.state.valid ? '#42c7da': '#e53935',
+			transStyle = this.state.transition,
+			inputStyle = {textAlign: 'center', color: 'white'}
+		return (<div>
+					<Img.Logo />
+				<h3 className='loginLogo'>Parting Glass</h3>
+				<div className='loginCard card' style={{backgroundColor: boxColor, transition: transStyle}}>
+					<input style={inputStyle} className="userField" placeholder='username' type='text' value={this.state.username} onChange={(e) => this.setState({username: e.target.value, email:e.target.value})}/>
+					<input style={inputStyle} className="passField" placeholder='password' type='password' value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} />
+					<M.ui.FlatButton onClick={() => this.login()} label='Sign In' />
+				</div>
+    		    <M.ui.RaisedButton style={{marginTop: '5rem', width: '50%', left: '50%', transform: 'translateX(-50%)', position: 'absolute'}} primary={true} onClick={() => window.location.hash = 'register'} label="Register"/>
+	    		    </div>)
 	}
 }
 
-export class Register extends React.Component {
+export class Register extends M.UI {
 	constructor(props) {
 		super(props)
 		this.user = new Taster()
@@ -121,7 +124,6 @@ export class Register extends React.Component {
 		})
 		this.user.signUp(null, {
 			success: () => {
-				alert('please check your email for confirmation')
 				window.location.hash ='login'
 			},
 			error: (user, error) => {
@@ -130,15 +132,19 @@ export class Register extends React.Component {
 		})
 	}
 	render() {
-		var match = this.state.passesMatch ? <span/> : <h6>passwords do not match</h6>
-		return (<div>
-					<input onChange={(e) =>this._handleChange('username')} ref="username" value={this.state.username} placeholder='username' />
+			var cardStyle = {padding: '3rem'},
+			inputStyle = {textAlign: 'center', color: 'white'},
+			match = this.state.passesMatch ? <span/> : <h6 style={{textAlign: 'center', color: 'red'}}>passwords do not match</h6>,
+			buttonStyle = {marginTop: '1rem'}
+		return (<div style={cardStyle} className='regCard card'>
+					<input style={inputStyle} type='text' onChange={(e) =>this._handleChange('username')} ref="username" value={this.state.username} placeholder='username' />
 					{match}
-					<input onChange={(e) => this._handleChange('pass1')} ref="pass1" type='password' value={this.state.pass1} placeholder='password' />
-					<input onBlur={() => this._confirmPass()} onChange={(e) => this._handleChange('pass2')} ref="pass2" type='password' value={this.state.pass2} placeholder='confirm password' />					
-					<input type='email' onChange={(e) => this._handleChange('email')} ref="email" value={this.state.email} placeholder='email' />
-					<input onChange={(e) => this._handleChange('org')} ref="org" value={this.state.org} placeholder='organization' />
-					<div onClick={() => this._signUp()}>submit</div>
+					<input style={inputStyle} onChange={(e) => this._handleChange('pass1')} ref="pass1" type='password' value={this.state.pass1} placeholder='password' />
+					<input style={inputStyle} onBlur={() => this._confirmPass()} onChange={(e) => this._handleChange('pass2')} ref="pass2" type='password' value={this.state.pass2} placeholder='confirm password' />					
+					<input style={inputStyle} type='email' onChange={(e) => this._handleChange('email')} ref="email" value={this.state.email} placeholder='email' />
+					<input style={inputStyle} type='text' onChange={(e) => this._handleChange('org')} ref="org" value={this.state.org} placeholder='organization' />
+					<M.ui.RaisedButton style={buttonStyle} primary={true} onClick={() => this._signUp()} label='Submit'/>
+					<M.ui.RaisedButton style={buttonStyle} secondary={true} onClick={() => window.location.hash = 'login'} label='Back'/>					
 				</div>)
 	}
 }
@@ -157,13 +163,14 @@ export class Home extends M.UI {
 		React.render(<TasteLanding time={this.state.timer} />, document.querySelector('.container'))
 	}
 	render() {
+		var cardStyle = {marginBottom: '2rem', backgroundColor: '#E0F2F1'}
 		return(<div className='home'>
-			<M.ui.Card className='card' style={{marginBottom: '2rem'}}>
+			<M.ui.Card className='homeCard' style={cardStyle}>
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Taste" subtitle="Run through a single wine, timed or untimed"/>}>
             <img src="../wines.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
-            <M.ui.FlatButton onClick={() => this.taste()} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
+            <M.ui.RaisedButton onClick={() => this.taste()} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
             <M.ui.Slider className="timeSlider" name="Time" onChange={(e, val) => this.setState({timer:val})} min={4} defaultValue={6} step={0.5} max={10.5}/>
           </M.ui.CardActions>
           <M.ui.CardText>
@@ -171,23 +178,23 @@ export class Home extends M.UI {
           	Here, you'll find a stage to practice. 
           </M.ui.CardText>
         </M.ui.Card>
-        <M.ui.Card className='card' style={{marginBottom: '2rem'}}>
+        <M.ui.Card className='homeCard'  style={cardStyle}>
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Wine Log" subtitle="Revisit Past Tastings"/>}>
             <img src="../barrels.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
-            <M.ui.FlatButton onClick={() => window.location.hash = 'log'} label="GO" />
+            <M.ui.RaisedButton onClick={() => window.location.hash = 'log'} label="GO" />
           </M.ui.CardActions>
           <M.ui.CardText>
           	Revisit and study past tasting notess
           </M.ui.CardText>
         </M.ui.Card>
-        <M.ui.Card className='card' style={{marginBottom: '2rem'}}>
+        <M.ui.Card  className='homeCard' style={cardStyle} >
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Flash Cards" subtitle="Create your own study material or randomly generate questions!"/>}>
             <img src="../books.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
-            <M.ui.FlatButton onClick={() => window.location.hash = 'cards'} label="GO" />
+            <M.ui.RaisedButton onClick={() => window.location.hash = 'decks'} label="GO" />
           </M.ui.CardActions>
           <M.ui.CardText>
           	Study and retain facts
@@ -235,6 +242,7 @@ export class Log extends M.UI {
 		} else {return ''}
 	}
 	render() {
+		var listingView = {display: 'flex', backgroundColor: 'white', flexDirection: 'row'}
 		return (<div className='wineLog'>
 			{this.props.wines.map((v) => {
 				var acidity = v.attributes.acidity,
@@ -246,16 +254,19 @@ export class Log extends M.UI {
 					mineral = v.attributes.mineral,
 					sugar = v.attributes.sugar,
 					type = v.attributes.type,
-					color = v.attributes.color,
+					color = v.attributes.wineColor,
 					nonFruit = v.attributes.nonFruit
-			return (<div className='wine'>
-									<div className='createdAt'>
+			return (<div style={listingView} className='listing card'>
+									<div style={{position: 'absolute'}} className='createdAt'>
 										{`${v.createdAt.getMonth()}/${v.createdAt.getDay()}`}
 									</div>
-									<div className='about'>
-										{`${type} wine from ${conclusions.subregion}, ${conclusions.country}
-										Producer: ${conclusions.producer}, Grapes: ${conclusions.grapes}, Vintage: ${conclusions.year}`}
+									<div style={{flexGrow: '1', backgroundColor: 'red'}} className='about'>
+										<ul>
+											<li>{`${type} wine from ${conclusions.country}, ${conclusions.region}, ${conclusions.subregion}`}</li> 
+											<li>{`${conclusions.producer}, ${conclusions.grapes}, ${conclusions.year}`}</li>
+										</ul>
 									</div>
+								<div style={{flexGrow: '3', backgroundColor: 'blue'}}>
 									<div className='structure'>
 										{`Acidity: ${acidity}, Alcohol: ${alcohol}, Sugar: ${sugar}
 										Finish: ${finish}`}
@@ -267,6 +278,7 @@ export class Log extends M.UI {
 										<div>{`Non-Fruit: ${this.parseProminent(nonFruit)} ${this.parseSlight(nonFruit)}`}</div>
 										<div>{`Mineral and Oak: ${this.parseProminent(mineral)} ${this.parseSlight(mineral)}`}</div>
 									</div>
+								</div>
 								</div>)
 							}
 							)}
@@ -288,12 +300,12 @@ export class TasteLanding extends M.UI {
 		React.render(<T.RedTaste time={this.props.time} />, document.querySelector('.container'))
 	}
 	render() {
-		return (<div style={{height: '50%', width: '50%', alignItems: 'center'}} className='card text'>
-					<div className='wineSelection card' style={{background: 'radial-gradient(ellipse at center, rgba(241,111,92,1) 0%, rgba(246,41,12,1) 0%, rgba(240,47,23,1) 4%, rgba(248,80,50,1) 31%, rgba(211,47,47,1) 100%)'}} onClick={() => this.redTaste()}>
-						<div>Red</div>
+		return (<div style={{alignItems: 'center'}} className='tasteLanding'>
+					<div className='wineSelection card' style={{marginBottom: '3rem', textAlign: 'center', background: 'radial-gradient(ellipse at center, rgba(241,111,92,1) 0%, rgba(246,41,12,1) 0%, rgba(240,47,23,1) 4%, rgba(248,80,50,1) 31%, rgba(211,47,47,1) 100%)'}} onClick={() => this.redTaste()}>
+					Red
 					</div>
-					<div className='wineSelection card' style={{background: 'radial-gradient(ellipse at center, rgba(241,231,103,1) 0%, rgba(254,182,69,1) 100%)'}} onClick={() => this.whiteTaste()}>
-						<div>White</div>
+					<div className='wineSelection card' style={{textAlign: 'center', background: 'radial-gradient(ellipse at center, rgba(241,231,103,1) 0%, rgba(254,182,69,1) 100%)'}} onClick={() => this.whiteTaste()}>
+					White
 					</div>
 				</div>)
 	}

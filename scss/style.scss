@@ -99,19 +99,21 @@ img {
  * YOUR CODE HERE
  */
 
-@media (min-width: 600px) {
-    .home {
-        max-width: 75%;
-        margin: auto;
-    }
-    .card {
-        max-width: 75%;
-        flex-direction: row;
-    }
-    .wineSelection {
-        font-size: 3rem;
-    }
+.loginLogo {
+    font-weight: 300;
+    color: white;
+    display: block;
+    text-align: center;
 }
+
+.loginCard {
+    width: 100%;
+    padding: 1rem;
+}
+.homeCard {
+    width: 100%;
+}
+
 
 body {
     background: #00838F;
@@ -129,6 +131,7 @@ body {
         display: flex;
         margin: auto;
         flex-direction: column;
+        padding: 1rem;
         .flexcont {
             flex-grow: 1;
             flex-basis: 50%;
@@ -227,11 +230,6 @@ body {
             border-right: 3px solid #FFF;
             transform-origin: 50% 50%;
         }
-        .button {
-            position: absolute;
-            left: 50%;
-            top: 110%;
-        }
     }
 }
 
@@ -241,13 +239,6 @@ body {
     .wine {
         flex-grow: 1;
     }
-}
-
-.loginForm {
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 .text {
@@ -279,4 +270,25 @@ body {
 
 .hidden {
     display: none;
+}
+
+@media (min-width: 600px) {
+    .home {
+        max-width: 75%;
+        margin: auto;
+    }
+    .wineSelection {
+        font-size: 3rem;
+    }
+    .loginCard {
+        width: 35%;
+        padding: 3rem;
+    }
+    .homeCard {
+        width: 75%;
+        margin: auto;
+    }
+    .regCard {
+        width: 50%;
+    }
 }

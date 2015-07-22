@@ -1,5 +1,6 @@
 import * as M from '../MUI'
 import React from 'react'
+import * as Img from './images'
 
 var White = Parse.Object.extend({
     initialize: function() {
@@ -91,8 +92,11 @@ class Options extends React.Component {
         $('html, body').animate({scrollTop: $(document).height()}, 500)
     }
     submit() {
+        console.log('submitting')
         this.props.wine.set(this.state)
         this.nextScreen()
+        console.log(this.state)
+        console.log(this.props.wine)
         $('html, body').animate({scrollTop: $(document).height()}, 500)
     }
     nextScreen() {
@@ -118,11 +122,11 @@ class Options extends React.Component {
         if (variant === true) { 
             return (<div className={`options`}>{options.map((str) => 
                     <VariantOption styleClass={this.classifyVariant(str)} node={this} prevState={this.state} name={str}/>)}
-                <div className='button' onClick={() => this.submitVariant()}>V</div>
+                <a style={{position: 'absolute', width: '100px', height: '100px',left: '50%',top: '100%',transform: 'translateX(-50%)'}} onClick={()=> this.submitVariant()}><Img.DownArrow className='svg' /></a>
                 </div>) 
             } else { return (<div className={`options`}>{options.map((str) => 
                     <Option styleClass={this.classifyInvariant(str)} attr={this.props.attr} node={this} name={str}/>)}
-                <div className='button' onClick={()=> this.submit()}>V</div>
+                <a style={{position: 'absolute', width: '100px', height: '100px',left: '50%',top: '100%',transform: 'translateX(-50%)'}} onClick={()=> this.submit()}><Img.DownArrow className='svg' /></a>
                 </div>) }
     }
 }
@@ -287,13 +291,14 @@ class Conclusions extends React.Component {
         current++
         this.props.controller.setState({currentScreen: current})
         console.log('next screen')
+        $('html, body').animate({scrollTop: $(document).height()}, 500)
     }
     render() {
         var mapStyle = this.state.mapOpen
         return(<div className={`attrScreen ${this.props.className || ''}`}>
-                <input className='country' placeholder='Country'/>
-                <input className='region'  placeholder='Region'/>
-                <input className='subregion'  placeholder='Subregion'/>
+                <input ref='country' className='country' onChange={() => this.setConclusions('country')} placeholder='Country'/>
+                <input ref='region' className='region' onChange={() => this.setConclusions('region')} placeholder='Region'/>
+                <input ref='subregion' className='subregion' onChange={() => this.setConclusions('subregion')} placeholder='Subregion'/>
                 <input onChange={() => this.setConclusions('grapes')} ref='grapes'placeholder='Grape/s'/>
                 <input onChange={() => this.setConclusions('year')} ref='year'placeholder='Year'/>
                 <input onChange={() => this.setConclusions('producer')} ref='producer'placeholder='Producer'/>

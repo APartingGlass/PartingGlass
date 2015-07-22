@@ -1,6 +1,7 @@
 import React from 'react'
 import * as M from '../MUI'
 
+
 var Deck = Parse.Object.extend({
     initialize: function() {
         console.log('new deck')
@@ -87,7 +88,10 @@ class CardsView extends M.UI {
 		this.newCard.set('question', this.state.question)
 		this.newCard.set('answer', this.state.answer)
 		this.newCard.save()
-		this.updateCards
+		this.updateCards()
+	}
+	goBack() {
+		window.location.hash = 'decks'
 	}
 	updateState(e, prop) {
 		var newState = {}
@@ -96,6 +100,11 @@ class CardsView extends M.UI {
 	}
 	render() {
 		return (<div className='grid grid-2-400 grid-4-600'>
+				<M.ui.Card>
+					<M.ui.CardActions>
+    				<M.ui.FlatButton onClick={() => this.goBack()} label='Back to Decks'/>
+    				</M.ui.CardActions>	
+				</M.ui.Card>			
 				<M.ui.Card>
 					<input onChange={(e) => this.updateState(e, 'question')} placeholder='question'/>
 					<input onChange={(e) => this.updateState(e, 'answer')} placeholder='answer'/>
@@ -116,6 +125,7 @@ class DeckBox extends M.UI {
 		}
 	}
 	pullCards() {
+		window.location.hash = 'cards'
 		React.render(<CardsView deck={this.state.deck}/>, document.querySelector('.container'))
 	}
 	render() {
@@ -144,7 +154,7 @@ class FlashCard extends M.UI {
 	}
 	render() {
 		var cardDisplay = this.state.showAnswer ? '1' : '0'
-		return (<M.ui.Card className='card'>
+		return (<M.ui.Card style={{}}>
 			        <M.ui.CardText>
 			        Question: {this.props.content.question}
           			</M.ui.CardText>
