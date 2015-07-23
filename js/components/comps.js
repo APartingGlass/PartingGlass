@@ -342,7 +342,7 @@ export class Tutorial extends M.UI {
 	render() {
 		var showOptions = this.state.showOptions ? 'block' : 'none',
 			currentBackground = (this.state.current === this.order.length-1) ? '#00838F' : '#E0F7FA'
-		return (<div style={{transition: 'all 0.5s ease', border: '1px solid black', backgroundColor: currentBackground}} onTouchEnd={() => this.nextScreen()} onClick={() => this.nextScreen()} className='example'>
+		return (<div style={{transition: 'all 0.5s ease', border: '3px solid black', backgroundColor: currentBackground, flexDirection: 'row'}} onTouchEnd={() => this.nextScreen()} onClick={() => this.nextScreen()} className='example card'>
 					<Img.Visual  show={this.state.showVis} />
 					<Img.Swirl  show={this.state.showSwirl} />
 					<Img.Nose  show={this.state.showNose} />
