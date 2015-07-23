@@ -158,7 +158,7 @@ export class Home extends M.UI {
 		return(<div className='home'>
 			<M.ui.Card className='homeCard' style={cardStyle}>
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Taste" subtitle="Run through a single wine, timed or untimed"/>}>
-            <img src="../wines.jpg"/>
+            <img src="./wines.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
             <M.ui.RaisedButton onTouchStart={() => this.taste()} onClick={() => this.taste()} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
@@ -171,7 +171,7 @@ export class Home extends M.UI {
         </M.ui.Card>
         <M.ui.Card className='homeCard'  style={cardStyle}>
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Wine Log" subtitle="Revisit Past Tastings"/>}>
-            <img src="../barrels.jpg"/>
+            <img src="./barrels.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
             <M.ui.RaisedButton onTouchStart={() => window.location.hash = 'log'} onClick={() => window.location.hash = 'log'} label="GO" />
@@ -182,7 +182,7 @@ export class Home extends M.UI {
         </M.ui.Card>
         <M.ui.Card  className='homeCard' style={cardStyle} >
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Flash Cards" subtitle="Create your own study material or randomly generate questions!"/>}>
-            <img src="../books.jpg"/>
+            <img src="./books.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
             <M.ui.RaisedButton onTouchStart={() => window.location.hash = 'decks'} onClick={() => window.location.hash = 'decks'} label="GO" />
