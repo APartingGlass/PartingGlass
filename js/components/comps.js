@@ -260,7 +260,7 @@ export class Log extends M.UI {
 										<ul style={{columnCount: 2}}>
 										<li>{`Color: ${color}`}</li> 
 										<li>{`Acidity: ${acidity}`}</li> 
-										<li>{`Alcohol: ${alcoxhol}`}</li> 
+										<li>{`Alcohol: ${alcohol}`}</li> 
 										<li>{`Sugar: ${sugar}`}</li>
 										<li>{`Finish: ${finish}`}</li>
 										</ul>
