@@ -8,6 +8,7 @@ import * as Comp from './components/comps'
 import * as T from './components/taste'
 import * as Cards from './components/cards'
 import * as Img from './components/images'
+React.initializeTouchEvents(true)
 
 window.$ = $
 ///initialize Parse

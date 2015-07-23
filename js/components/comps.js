@@ -69,9 +69,9 @@ export class Login extends M.UI {
 				<div className='loginCard card' style={{backgroundColor: boxColor, transition: transStyle}}>
 					<input style={inputStyle} className="userField" placeholder='username' type='text' value={this.state.username} onChange={(e) => this.setState({username: e.target.value, email:e.target.value})}/>
 					<input style={inputStyle} className="passField" placeholder='password' type='password' value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} />
-					<M.ui.FlatButton onClick={() => this.login()} label='Sign In' />
+					<M.ui.FlatButton onTouchStart={() => this.login()} onClick={() => this.login()} label='Sign In' />
 				</div>
-    		    <M.ui.RaisedButton style={{marginTop: '5rem', width: '50%', left: '50%', transform: 'translateX(-50%)', position: 'absolute'}} primary={true} onClick={() => window.location.hash = 'register'} label="Register"/>
+    		    <M.ui.RaisedButton style={{marginTop: '5rem', width: '50%', left: '50%', transform: 'translateX(-50%)', position: 'absolute'}} primary={true} onTouchStart={() => window.location.hash = 'register'} onClick={() => window.location.hash = 'register'} label="Register"/>
 	    		    </div>)
 	}
 }
@@ -134,8 +134,8 @@ export class Register extends M.UI {
 					<input style={inputStyle} onBlur={() => this._confirmPass()} onChange={(e) => this._handleChange('pass2')} ref="pass2" type='password' value={this.state.pass2} placeholder='confirm password' />					
 					<input style={inputStyle} type='email' onChange={(e) => this._handleChange('email')} ref="email" value={this.state.email} placeholder='email' />
 					<input style={inputStyle} type='text' onChange={(e) => this._handleChange('org')} ref="org" value={this.state.org} placeholder='organization' />
-					<M.ui.RaisedButton style={buttonStyle} primary={true} onClick={() => this._signUp()} label='Submit'/>
-					<M.ui.RaisedButton style={buttonStyle} secondary={true} onClick={() => window.location.hash = 'login'} label='Back'/>					
+					<M.ui.RaisedButton style={buttonStyle} primary={true} onTouchStart={() => this._signUp()} onClick={() => this._signUp()} label='Submit'/>
+					<M.ui.RaisedButton style={buttonStyle} secondary={true} onTouchStart={() => window.location.hash = 'login'} onClick={() => window.location.hash = 'login'} label='Back'/>					
 				</div>)
 	}
 }
@@ -161,7 +161,7 @@ export class Home extends M.UI {
             <img src="../wines.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
-            <M.ui.RaisedButton onClick={() => this.taste()} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
+            <M.ui.RaisedButton onTouchStart={() => this.taste()} onClick={() => this.taste()} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
             <M.ui.Slider className="timeSlider" name="Time" onChange={(e, val) => this.setState({timer:val})} min={4} defaultValue={6} step={0.5} max={10.5}/>
           </M.ui.CardActions>
           <M.ui.CardText>
@@ -174,7 +174,7 @@ export class Home extends M.UI {
             <img src="../barrels.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
-            <M.ui.RaisedButton onClick={() => window.location.hash = 'log'} label="GO" />
+            <M.ui.RaisedButton onTouchStart={() => window.location.hash = 'log'} onClick={() => window.location.hash = 'log'} label="GO" />
           </M.ui.CardActions>
           <M.ui.CardText>
           	Revisit and study past tasting notess
@@ -185,7 +185,7 @@ export class Home extends M.UI {
             <img src="../books.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
-            <M.ui.RaisedButton onClick={() => window.location.hash = 'decks'} label="GO" />
+            <M.ui.RaisedButton onTouchStart={() => window.location.hash = 'decks'} onClick={() => window.location.hash = 'decks'} label="GO" />
           </M.ui.CardActions>
           <M.ui.CardText>
           	Study and retain facts
@@ -300,12 +300,12 @@ export class TasteLanding extends M.UI {
 		React.render(<T.RedTaste time={this.props.time} />, document.querySelector('.container'))
 	}
 	render() {
-			var tutorial = this.state.showTut ? <Tutorial /> : <span />
+			var tutorial = this.state.showTut ? <Tutorial parent={this} /> : <span />
 		return (<div style={{alignItems: 'center'}} className='tasteLanding'>
-					<div className='wineSelection card' style={{marginBottom: '3rem', textAlign: 'center', background: 'radial-gradient(ellipse at center, rgba(241,111,92,1) 0%, rgba(246,41,12,1) 0%, rgba(240,47,23,1) 4%, rgba(248,80,50,1) 31%, rgba(211,47,47,1) 100%)'}} onClick={() => this.redTaste()}>
+					<div className='wineSelection card' style={{marginBottom: '3rem', textAlign: 'center', background: 'radial-gradient(ellipse at center, rgba(241,111,92,1) 0%, rgba(246,41,12,1) 0%, rgba(240,47,23,1) 4%, rgba(248,80,50,1) 31%, rgba(211,47,47,1) 100%)'}} onTouchStart={() => this.redTaste()} onClick={() => this.redTaste()}>
 					Red
 					</div>
-					<div className='wineSelection card' style={{textAlign: 'center', background: 'radial-gradient(ellipse at center, rgba(241,231,103,1) 0%, rgba(254,182,69,1) 100%)'}} onClick={() => this.whiteTaste()}>
+					<div className='wineSelection card' style={{textAlign: 'center', background: 'radial-gradient(ellipse at center, rgba(241,231,103,1) 0%, rgba(254,182,69,1) 100%)'}} onTouchStart={() => this.whiteTaste()} onClick={() => this.whiteTaste()}>
 					White
 					</div>
 					{tutorial}
@@ -315,16 +315,41 @@ export class TasteLanding extends M.UI {
 export class Tutorial extends M.UI {
 	constructor(props) {
 		super(props)
+		this.state = {
+			showVis: true,
+			showSwirl: false,
+			showNose: false,
+			showTaste: false,
+			showOptions: false,
+			current: 0
+		}
+		this.order = ['showVis', 'showSwirl', 'showNose', 'showTaste', 'showOptions']
+		this.textOrder = ['When First Tasting, Note Visual Qualities of the Wine', 'Agitate the Wine to better note characteristics of Weight and Color', 'Observe Aromatic Qualities before moving on to the palate', 'Aerate the wine and use your palate to confirm your aromatic observations', 'The Options available to you will look like this']
+	}
+	nextScreen() {
+		if (this.state.current === this.order.length) {
+			this.props.parent.setState({showTut: false})
+			return
+		}
+		var next = this.order[this.state.current+1],
+			current = this.order[this.state.current],
+			nextState= {}
+		nextState[next] = true
+		nextState[current] = false
+		nextState[current] = this.state.current++
+		this.setState(nextState)
 	}
 	render() {
-		return (<div className='example'>
-					<Img.Visual  />
-					<Img.Swirl  />
-					<Img.Nose  />
-					<Img.Taste  />						
-					<div className ='option'>None</div>
-					<div className ='option selected'>Present</div>
-					<div className ='option selected prominent'>Prominent</div>						
+		var showOptions = this.state.showOptions ? 'block' : 'none'
+		return (<div onTouchStart={() => this.nextScreen()} onClick={() => this.nextScreen()} className='example'>
+					<Img.Visual  show={this.state.showVis} />
+					<Img.Swirl  show={this.state.showSwirl} />
+					<Img.Nose  show={this.state.showNose} />
+					<Img.Taste  show={this.state.showTaste} />						
+					<div style={{display: showOptions}} className ='option'>None</div>
+					<div style={{display: showOptions}} className ='option selected'>Present</div>
+					<div style={{display: showOptions}} className ='option selected prominent'>Prominent</div>
+					<div style={{position: 'absolute', top: '75%', left: '50%', transform: 'translateX(-50%)', fontSize: '1.5rem', fontWeight: '600', textAlign: 'center'}}>{this.textOrder[this.state.current]}</div> 					
 				</div>)
 	}
 }
@@ -363,8 +388,8 @@ export class NavBar extends M.UI {
 	}
 	render() {
 		return (<M.ui.AppBar className={this.state.classOpacity} style={{background: '#4DD0E1', color: 'red', position: 'fixed', top: '0'}} title="Parting Glass"
-  					iconElementLeft={<M.ui.IconButton onClick={() => this.goHome()}><Img.Logo /></M.ui.IconButton>} 
-  					iconElementRight={<M.ui.IconButton onClick={() => this.logOut()}><Img.LogOut/></M.ui.IconButton>}>
+  					iconElementLeft={<M.ui.IconButton onTouchStart={() => this.goHome()} onClick={() => this.goHome()}><Img.Logo /></M.ui.IconButton>} 
+  					iconElementRight={<M.ui.IconButton onTouchStart={() => this.goHome()} onClick={() => this.logOut()}><Img.LogOut/></M.ui.IconButton>}>
   					</M.ui.AppBar>)}
 }
 

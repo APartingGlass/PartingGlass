@@ -102,14 +102,14 @@ class CardsView extends M.UI {
 		return (<div className='grid grid-2-400 grid-4-600'>
 				<M.ui.Card>
 					<M.ui.CardActions>
-    				<M.ui.FlatButton onClick={() => this.goBack()} label='Back to Decks'/>
+    				<M.ui.FlatButton onTouchStart={() => this.goBack()} onClick={() => this.goBack()} label='Back to Decks'/>
     				</M.ui.CardActions>	
 				</M.ui.Card>			
 				<M.ui.Card>
 					<input onChange={(e) => this.updateState(e, 'question')} placeholder='question'/>
 					<input onChange={(e) => this.updateState(e, 'answer')} placeholder='answer'/>
 					<M.ui.CardActions>
-    				<M.ui.FlatButton onClick={() => this.newCard()} label='New Card'/>
+    				<M.ui.FlatButton onTouchStart={() => this.newCard()} onClick={() => this.newCard()} label='New Card'/>
     				</M.ui.CardActions>	
 				</M.ui.Card>
 				{this.state.content.map((card) => <FlashCard content={card.attributes}/>)}
@@ -132,7 +132,7 @@ class DeckBox extends M.UI {
 		return(<M.ui.Card> 
 			<M.ui.CardTitle title={this.props.deck.attributes.name} />
 			<M.ui.CardActions>
-    		<M.ui.FlatButton onClick={() => this.pullCards()} label='Study'/>
+    		<M.ui.FlatButton onTouchStart={() => this.pullCards()} onClick={() => this.pullCards()} label='Study'/>
     		</M.ui.CardActions>
 			</M.ui.Card>
 			)
@@ -159,7 +159,7 @@ class FlashCard extends M.UI {
 			        Question: {this.props.content.question}
           			</M.ui.CardText>
    	    		<M.ui.CardActions>
-    		    <M.ui.FlatButton onClick={() => this.toggleAnswer()} label="Show Answer"/>
+    		    <M.ui.FlatButton onTouchStart={() => this.toggleAnswer()} onClick={() => this.toggleAnswer()} label="Show Answer"/>
     		    </M.ui.CardActions>
           			<M.ui.CardText style={{opacity: cardDisplay}}>
 			        Answer: {this.props.content.answer}
@@ -201,7 +201,7 @@ class DeckGrid extends M.UI {
 		return (<div style={{marginTop: '3rem'}}className='decks grid grid-2-400 grid-4-600'>
 				<M.ui.Card>
 					<M.ui.CardActions>
-    				<M.ui.FlatButton onClick={() => this.newDeck()} label='New Deck'/>
+    				<M.ui.FlatButton onTouchStart={() => this.newDeck()} onClick={() => this.newDeck()} label='New Deck'/>
     				</M.ui.CardActions>					
 				</M.ui.Card>
 					{this.state.content.map((v) => <DeckBox deck={v}/>)}
@@ -236,7 +236,7 @@ export class DecksView extends M.UI {
 				<M.ui.Card className='card'>
         		<M.ui.CardTitle title="Random Card" subtitle="Automatically Generate A Card from your previous tastings"/>
    	    		<M.ui.CardActions>
-    		    <M.ui.FlatButton onClick={() => this.randomWineQuestion()} label='Generate'/>
+    		    <M.ui.FlatButton onTouchStart={() => this.randomWineQuestion()} onClick={() => this.randomWineQuestion()} label='Generate'/>
     		    </M.ui.CardActions>
         		</M.ui.Card>
         		{randomCard}
