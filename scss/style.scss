@@ -110,9 +110,11 @@ img {
     width: 100%;
     padding: 1rem;
 }
+
 .homeCard {
     width: 100%;
 }
+
 .listing::after {
     content: attr(data-date);
     background: red;
@@ -124,9 +126,11 @@ img {
     right: 95%;
     top: -5%;
 }
+
 .card {
     overflow: initial;
 }
+
 body {
     background: #00838F;
 }
@@ -179,11 +183,12 @@ body {
         display: block;
         flex-grow: 1;
         font-size: 2rem;
+        font-weight: 700;
+        color: white;
         position: relative;
         text-align: center;
     }
     .options {
-        border: 1px sold white;
         font-size: 2rem;
         height: 100%;
         display: flex;
@@ -191,58 +196,61 @@ body {
         flex-grow: 3;
         flex-flow: row wrap;
         justify-content: space-around;
-        .option {
-            border: 1px solid black;
-            width: 30%;
-            min-height: 25%;
-            position: relative;
-            vertical-align: middle;
-            color: #0b7;
-            display: inline-block;
-            height: 60px;
-            line-height: 60px;
-            text-align: center;
-            transition: 0.5s;
-            padding: 0 20px;
-            cursor: pointer;
-            border: 2px solid #0b7;
-            transition: 0.5s;
-            &.selected {
-                border: 5px solid rgba(0, 160, 80, 0);
-                color: #FFF;
-                &.prominent {
-                    background-color: red;
-                }
-            }
-            &.selected:after,
-            &.selected:before {
-                transform: scale(1);
-            }
-        }
-        .option::before,
-        .option::after {
-            width: 100%;
-            height: 100%;
-            z-index: 3;
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            box-sizing: border-box;
-            transform: scale(0);
-            transition: 0.5s;
-        }
-        .option::before {
-            border-bottom: 3px solid #FFF;
-            border-left: 3px solid #FFF;
-            transform-origin: 50% 50%;
-        }
-        .option::after {
-            border-top: 3px solid #FFF;
-            border-right: 3px solid #FFF;
-            transform-origin: 50% 50%;
+    }
+}
+
+.option {
+    border: 2px dashed white;
+    min-width: 30%;
+    min-height: 25%;
+    position: relative;
+    vertical-align: middle;
+    color: white;
+    display: inline-block;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    transition: 0.5s;
+    padding: 0 20px;
+    cursor: pointer;
+    transition: 0.5s;
+    &.selected {
+        border: 5px solid rgba(0, 160, 80, 0);
+        color: #FFF;
+        &.prominent {
+            background-color: #e53935;
         }
     }
+    &.selected:after,
+    &.selected:before {
+        transform: scale(1);
+    }
+}
+
+.option::before,
+.option::after {
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    transform: scale(0);
+    transition: 0.5s;
+}
+
+.option::before {
+    border-bottom: 3px solid #FFF;
+    border-left: 3px solid #FFF;
+    transform-origin: 50% 50%;
+}
+
+.option::after {
+    border-top: 3px solid #FFF;
+    border-right: 3px solid #FFF;
+    transform-origin: 50% 50%;
 }
 
 .wineLog {
@@ -260,18 +268,6 @@ body {
     transform: translate(-50%, -50%);
 }
 
-.Gold {
-    background: #FBC02D;
-}
-
-.Yellow {
-    background: #FFEE58;
-}
-
-.Straw {
-    background: #FFEE58;
-}
-
 .soft {
     opacity: 0.4;
 }
@@ -283,6 +279,16 @@ body {
 .hidden {
     display: none;
 }
+.example {
+    margin-top: 3rem;
+    background-color: #E0F7FA;
+    position: fixed;
+    width: 75%;
+    height: 75%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
 @media (min-width: 600px) {
     .home {
@@ -291,6 +297,7 @@ body {
     }
     .wineSelection {
         font-size: 3rem;
+        max-width: 50%;
     }
     .loginCard {
         width: 35%;
@@ -306,6 +313,6 @@ body {
     .listing {
         max-width: 40%;
         margin-bottom: 1rem;
-        max-height: 20%;    
+        max-height: 20%;
     }
 }

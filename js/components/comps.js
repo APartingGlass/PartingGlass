@@ -151,7 +151,7 @@ export class Home extends M.UI {
 	}
 	taste() {
 		window.location.hash = 'taste'
-		React.render(<TasteLanding time={this.state.timer} />, document.querySelector('.container'))
+		React.render(<TasteLanding time={this.state.timer}/>, document.querySelector('.container'))
 	}
 	render() {
 		var cardStyle = {marginBottom: '2rem', backgroundColor: '#E0F2F1'}
@@ -260,7 +260,7 @@ export class Log extends M.UI {
 										<ul style={{columnCount: 2}}>
 										<li>{`Color: ${color}`}</li> 
 										<li>{`Acidity: ${acidity}`}</li> 
-										<li>{`Alcohol: ${alcohol}`}</li> 
+										<li>{`Alcohol: ${alcoxhol}`}</li> 
 										<li>{`Sugar: ${sugar}`}</li>
 										<li>{`Finish: ${finish}`}</li>
 										</ul>
@@ -289,7 +289,8 @@ export class TasteLanding extends M.UI {
 	constructor(props) {
 		super(props)
 		this.state = {
-			wine: null
+			wine: null,
+			showTut: true
 		}
 	}
 	whiteTaste() {
@@ -299,6 +300,7 @@ export class TasteLanding extends M.UI {
 		React.render(<T.RedTaste time={this.props.time} />, document.querySelector('.container'))
 	}
 	render() {
+			var tutorial = this.state.showTut ? <Tutorial /> : <span />
 		return (<div style={{alignItems: 'center'}} className='tasteLanding'>
 					<div className='wineSelection card' style={{marginBottom: '3rem', textAlign: 'center', background: 'radial-gradient(ellipse at center, rgba(241,111,92,1) 0%, rgba(246,41,12,1) 0%, rgba(240,47,23,1) 4%, rgba(248,80,50,1) 31%, rgba(211,47,47,1) 100%)'}} onClick={() => this.redTaste()}>
 					Red
@@ -306,6 +308,23 @@ export class TasteLanding extends M.UI {
 					<div className='wineSelection card' style={{textAlign: 'center', background: 'radial-gradient(ellipse at center, rgba(241,231,103,1) 0%, rgba(254,182,69,1) 100%)'}} onClick={() => this.whiteTaste()}>
 					White
 					</div>
+					{tutorial}
+				</div>)
+	}
+}
+export class Tutorial extends M.UI {
+	constructor(props) {
+		super(props)
+	}
+	render() {
+		return (<div className='example'>
+					<Img.Visual  />
+					<Img.Swirl  />
+					<Img.Nose  />
+					<Img.Taste  />						
+					<div className ='option'>None</div>
+					<div className ='option selected'>Present</div>
+					<div className ='option selected prominent'>Prominent</div>						
 				</div>)
 	}
 }

@@ -28,14 +28,12 @@ var AppRouter = Parse.Router.extend({
         'log': 'log',
         'decks': 'decks'
     },
-    ///login screen
     login: function() {
         if (!Parse.User.current()) {
         React.render(<span/>, document.querySelector('.nav'))
     	React.render( <Comp.Login /> , document.querySelector('.container'))
     } else {window.location.hash ='home'}
     },
-    ///home screen with different options
     home: function() {
         if(Parse.User.current()) {
             React.render( <Comp.NavBar />, document.querySelector('.nav'))

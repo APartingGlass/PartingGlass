@@ -266,20 +266,20 @@ class Conclusions extends React.Component {
 
         }  
     }
-    // componentDidMount() {
-    //     this.state.country = new google.maps.places.Autocomplete((document.querySelector('.country')))
-    //     this.state.region = new google.maps.places.Autocomplete((document.querySelector('.region')))
-    //     this.state.subregion = new google.maps.places.Autocomplete((document.querySelector('.subregion'))) 
-    // }
+    componentDidMount() {
+        this.state.country = new google.maps.places.Autocomplete((document.querySelector('.country')))
+        this.state.region = new google.maps.places.Autocomplete((document.querySelector('.region')))
+        this.state.subregion = new google.maps.places.Autocomplete((document.querySelector('.subregion'))) 
+    }
     setConclusions(attr) {
         var newState = {}
         newState[attr] = React.findDOMNode(this.refs[attr]).value
         this.setState(newState)
     }
     confirm() {
-        // console.log(this.state.country.getPlace(), 'country')
-        // console.log(this.state.region.getPlace(), 'region')
-        // console.log(this.state.subregion.getPlace(), 'subregion')        
+        console.log(this.state.country.getPlace(), 'country')
+        console.log(this.state.region.getPlace(), 'region')
+        console.log(this.state.subregion.getPlace(), 'subregion')        
         this.props.wine.set({
             conclusions: this.state
         })
