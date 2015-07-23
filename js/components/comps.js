@@ -158,7 +158,7 @@ export class Home extends M.UI {
 		return(<div className='home'>
 			<M.ui.Card className='homeCard' style={cardStyle}>
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Taste" subtitle="Run through a single wine, timed or untimed"/>}>
-            <img href="https://raw.githubusercontent.com/APartingGlass/PartingGlass/master/wines.jpg"/>
+            <img src="./Images/wines.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
             <M.ui.RaisedButton onTouchStart={() => this.taste()} onClick={() => this.taste()} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
@@ -171,7 +171,7 @@ export class Home extends M.UI {
         </M.ui.Card>
         <M.ui.Card className='homeCard'  style={cardStyle}>
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Wine Log" subtitle="Revisit Past Tastings"/>}>
-            <img href="https://raw.githubusercontent.com/APartingGlass/PartingGlass/master/barrels.jpg"/>
+            <img src="./Images/barrels.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
             <M.ui.RaisedButton onTouchStart={() => window.location.hash = 'log'} onClick={() => window.location.hash = 'log'} label="GO" />
@@ -182,7 +182,7 @@ export class Home extends M.UI {
         </M.ui.Card>
         <M.ui.Card  className='homeCard' style={cardStyle} >
           <M.ui.CardMedia overlay={<M.ui.CardTitle title="Flash Cards" subtitle="Create your own study material or randomly generate questions!"/>}>
-            <img href="https://raw.githubusercontent.com/APartingGlass/PartingGlass/master/books.jpg"/>
+            <img src="./Images/books.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
             <M.ui.RaisedButton onTouchStart={() => window.location.hash = 'decks'} onClick={() => window.location.hash = 'decks'} label="GO" />
@@ -327,7 +327,7 @@ export class Tutorial extends M.UI {
 		this.textOrder = ['When First Tasting, Note Visual Qualities of the Wine', 'Agitate the Wine to better note characteristics of Weight and Color', 'Observe Aromatic Qualities before moving on to the palate', 'Aerate the wine and use your palate to confirm your aromatic observations', 'The Options available to you will look like this']
 	}
 	nextScreen() {
-		if (this.state.current === this.order.length) {
+		if (this.state.current === this.order.length-1) {
 			this.props.parent.setState({showTut: false})
 			return
 		}
@@ -340,8 +340,9 @@ export class Tutorial extends M.UI {
 		this.setState(nextState)
 	}
 	render() {
-		var showOptions = this.state.showOptions ? 'block' : 'none'
-		return (<div onTouchStart={() => this.nextScreen()} onClick={() => this.nextScreen()} className='example'>
+		var showOptions = this.state.showOptions ? 'block' : 'none',
+			currentBackground = (this.state.current === this.order.length-1) ? '#00838F' : '#E0F7FA'
+		return (<div style={{transition: 'all 0.5s ease', border: '1px solid black', backgroundColor: currentBackground}} onTouchStart={() => this.nextScreen()} onClick={() => this.nextScreen()} className='example'>
 					<Img.Visual  show={this.state.showVis} />
 					<Img.Swirl  show={this.state.showSwirl} />
 					<Img.Nose  show={this.state.showNose} />
