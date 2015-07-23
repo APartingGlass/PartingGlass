@@ -23,15 +23,6 @@ var Taster = Parse.User.extend({
 	}
 })
 
-export class Loading extends M.UI {
-	constructor(props) {
-		super(props)
-	}
-	render() {
-		return(
-			<M.ui.CircularProgress className="loader text" style={{position: 'absolute', top: '50%', left: '50%'}} mode="indeterminate" size={4} />)
-	}
-}
 
 export class Login extends M.UI {
 	constructor(props) {
@@ -65,7 +56,7 @@ export class Login extends M.UI {
                 React.render(<Login /> , document.querySelector('.container'))
             }
         })
-        React.render( < Loading / > , document.querySelector('.container'))
+        React.render( <Img.Loader /> , document.querySelector('.container'))
     } else {this.invalid() }
 	}
 	render() {
@@ -218,19 +209,6 @@ export class Log extends M.UI {
 	parseProminent(obj) {
 		var results = Object.keys(obj).reduce(
 			(a, v, i) => {
-				if (obj[v] === 3) {
-					a.push(v)
-				}
-				return a
-			}
-			,[])
-		if (results.length > 0) {
-			return `Prominently ${results.map((v) => v + ' ')}`
-		} else {return ''}
-	}
-	parseSlight(obj) {
-		var results = Object.keys(obj).reduce(
-			(a, v, i) => {
 				if (obj[v] === 2) {
 					a.push(v)
 				}
@@ -238,11 +216,25 @@ export class Log extends M.UI {
 			}
 			,[])
 		if (results.length > 0) {
-			return `Slightly ${results.join(', ')}`
+			return `Prominently ${results.join(';')}`
+		} else {return ''}
+	}
+	parseSlight(obj) {
+		var results = Object.keys(obj).reduce(
+			(a, v, i) => {
+				if (obj[v] === 1) {
+					a.push(v)
+				}
+				return a
+			}
+			,[])
+		if (results.length > 0) {
+			return `Slightly ${results.join(';')}`
 		} else {return ''}
 	}
 	render() {
-		var listingView = {display: 'flex', backgroundColor: 'white', flexDirection: 'row'}
+		var listingView = {display: 'flex', backgroundColor: 'white', flexDirection: 'row', fontFamily: 'Roboto', textAlign: 'center', marginBottom: '1rem'},
+			spanStyle = {fontWeight: '700'}
 		return (<div className='wineLog'>
 			{this.props.wines.map((v) => {
 				var acidity = v.attributes.acidity,
@@ -256,27 +248,34 @@ export class Log extends M.UI {
 					type = v.attributes.type,
 					color = v.attributes.wineColor,
 					nonFruit = v.attributes.nonFruit
-			return (<div style={listingView} className='listing card'>
-									<div style={{position: 'absolute'}} className='createdAt'>
-										{`${v.createdAt.getMonth()}/${v.createdAt.getDay()}`}
-									</div>
-									<div style={{flexGrow: '1', backgroundColor: 'red'}} className='about'>
+			return (<div style={listingView} data-date={`${v.createdAt.getMonth()}/${v.createdAt.getDay()}`} className='listing card'>
+									<div style={{flexGrow: '1', flexBasis: '20%', border: '1px dashed #B2DFDB'}} className='about'>
 										<ul>
 											<li>{`${type} wine from ${conclusions.country}, ${conclusions.region}, ${conclusions.subregion}`}</li> 
 											<li>{`${conclusions.producer}, ${conclusions.grapes}, ${conclusions.year}`}</li>
 										</ul>
 									</div>
-								<div style={{flexGrow: '3', backgroundColor: 'blue'}}>
-									<div className='structure'>
-										{`Acidity: ${acidity}, Alcohol: ${alcohol}, Sugar: ${sugar}
-										Finish: ${finish}`}
+								<div style={{flexGrow: '4', flexBasis: '20%'}}>
+									<div style={{flexGrow: '1', border: '1px dashed #B2DFDB'}} className='structure'>
+										<ul style={{columnCount: 2}}>
+										<li>{`Color: ${color}`}</li> 
+										<li>{`Acidity: ${acidity}`}</li> 
+										<li>{`Alcohol: ${alcohol}`}</li> 
+										<li>{`Sugar: ${sugar}`}</li>
+										<li>{`Finish: ${finish}`}</li>
+										</ul>
 									</div>
-									<div className='notes'>
-										<div>{`Color: ${color}`}</div>
-										<div>{`Fruit Qualities: ${this.parseProminent(fruitQuality)} ${this.parseSlight(fruitQuality)}`}</div>
-										<div>{`Fruit Families: ${this.parseProminent(fruitFamily)} ${this.parseSlight(fruitFamily)}`}</div>
-										<div>{`Non-Fruit: ${this.parseProminent(nonFruit)} ${this.parseSlight(nonFruit)}`}</div>
-										<div>{`Mineral and Oak: ${this.parseProminent(mineral)} ${this.parseSlight(mineral)}`}</div>
+									<div style={{ flexGrow: '1', border: '1px dashed #B2DFDB'}} className='notes'>
+										<ul>
+										<li><span style={spanStyle}>Fruit Qualities:</span> {this.parseProminent(fruitQuality)}
+																							{this.parseSlight(fruitQuality)}</li>
+										<li><span style={spanStyle}>Fruit Families:</span> {this.parseProminent(fruitFamily)} 
+																							{this.parseSlight(fruitFamily)}</li>
+										<li><span style={spanStyle}>Non-Fruit:</span> {this.parseProminent(nonFruit)} 
+																						{this.parseSlight(nonFruit)}</li>
+										<li><span style={spanStyle}>Mineral and Oak:</span> {this.parseProminent(mineral)} 
+																							{this.parseSlight(mineral)}</li>
+										</ul>
 									</div>
 								</div>
 								</div>)

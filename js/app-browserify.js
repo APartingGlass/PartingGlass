@@ -7,6 +7,7 @@ import React from 'react'
 import * as Comp from './components/comps'
 import * as T from './components/taste'
 import * as Cards from './components/cards'
+import * as Img from './components/images'
 
 window.$ = $
 ///initialize Parse
@@ -45,7 +46,7 @@ var AppRouter = Parse.Router.extend({
         React.render(<Comp.Register />, document.querySelector('.container'))
     },
     log: function() {
-        React.render(<Comp.Loading/>, document.querySelector('.container'))
+        React.render(<Img.Loader/>, document.querySelector('.container'))
         Parse.Cloud.run('userWines', {}, {
             success: function (result) {
                 React.render(<Comp.Log wines={result} />, document.querySelector('.container'))

@@ -113,8 +113,20 @@ img {
 .homeCard {
     width: 100%;
 }
-
-
+.listing::after {
+    content: attr(data-date);
+    background: red;
+    height: 3rem;
+    width: 3rem;
+    line-height: 3;
+    border-radius: 50%;
+    position: absolute;
+    right: 95%;
+    top: -5%;
+}
+.card {
+    overflow: initial;
+}
 body {
     background: #00838F;
 }
@@ -290,5 +302,10 @@ body {
     }
     .regCard {
         width: 50%;
+    }
+    .listing {
+        max-width: 40%;
+        margin-bottom: 1rem;
+        max-height: 20%;    
     }
 }
