@@ -78,6 +78,7 @@ class Options extends React.Component {
     constructor(props){
         super(props)
         this.state = {
+            ready: false
         }
         if (this.props.variant) {
             this.props.options.forEach((str) => this.state[str] = 0)
@@ -122,11 +123,11 @@ class Options extends React.Component {
         if (variant === true) { 
             return (<div className={`options`}>{options.map((str) => 
                     <VariantOption styleClass={this.classifyVariant(str)} node={this} prevState={this.state} name={str}/>)}
-                <a style={{position: 'absolute', width: '100px', height: '100px',left: '50%',top: '100%',transform: 'translateX(-50%)'}} onTouchEnd={()=> this.submitVariant()} onClick={()=> this.submitVariant()}><Img.DownArrow className='svg' /></a>
+                <a style={{position: 'absolute', width: '100px', height: '100px',left: '50%',top: '100%',transform: 'translateX(-50%)'}} onTouchEnd={()=> this.submitVariant()} onClick={()=> this.submitVariant()}><Img.DownArrow /></a>
                 </div>) 
             } else { return (<div className={`options`}>{options.map((str) => 
                     <Option styleClass={this.classifyInvariant(str)} attr={this.props.attr} node={this} name={str}/>)}
-                <a style={{position: 'absolute', width: '100px', height: '100px',left: '50%',top: '100%',transform: 'translateX(-50%)'}} onTouchEnd={()=> this.submit()} onClick={()=> this.submit()}><Img.DownArrow className='svg' /></a>
+                <a style={{position: 'absolute', width: '100px', height: '100px',left: '50%',top: '100%',transform: 'translateX(-50%)'}} onTouchEnd={()=> this.submit()} onClick={()=> this.submit()}><Img.DownArrow /></a>
                 </div>) }
     }
 }
@@ -246,18 +247,6 @@ class Alcohol extends React.Component {
     }
 }
 
-class LogWine extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-    save() {
-        this.props.wine.save()
-        window.location.hash = 'home'
-    }
-    render() {
-        return (<div className={`attrScreen ${this.props.className || ''}`} onTouchEnd={() =>this.save()} onClick={() =>this.save()} >Log Wine</div>)
-    }
-}
 
 class Conclusions extends React.Component {
     constructor(props) {
@@ -266,25 +255,17 @@ class Conclusions extends React.Component {
 
         }  
     }
-    componentDidMount() {
-        this.state.country = new google.maps.places.Autocomplete((document.querySelector('.country')))
-        this.state.region = new google.maps.places.Autocomplete((document.querySelector('.region')))
-        this.state.subregion = new google.maps.places.Autocomplete((document.querySelector('.subregion'))) 
-    }
     setConclusions(attr) {
         var newState = {}
         newState[attr] = React.findDOMNode(this.refs[attr]).value
         this.setState(newState)
     }
-    confirm() {
-        console.log(this.state.country.getPlace(), 'country')
-        console.log(this.state.region.getPlace(), 'region')
-        console.log(this.state.subregion.getPlace(), 'subregion')        
+    confirm() {       
         this.props.wine.set({
             conclusions: this.state
         })
-        console.log('wineset')
-        this.nextScreen()
+        this.props.wine.save()
+        window.location.hash = 'home'
     }
     nextScreen() {
         var current = this.props.controller.state.currentScreen
@@ -302,7 +283,7 @@ class Conclusions extends React.Component {
                 <input onChange={() => this.setConclusions('grapes')} ref='grapes'placeholder='Grape/s'/>
                 <input onChange={() => this.setConclusions('year')} ref='year'placeholder='Year'/>
                 <input onChange={() => this.setConclusions('producer')} ref='producer'placeholder='Producer'/>
-                <div onTouchEnd={() => this.confirm()} onClick={() => this.confirm()}>Confirm</div>
+                <M.ui.RaisedButton primary={true} onTouchEnd={() => this.confirm()} onClick={() => this.confirm()} label='confirm'/>
             </div>)
     }
 }
@@ -313,7 +294,7 @@ export class WhiteTaste extends M.UI {
         this.state = {
             obj: new White(),
             currentScreen: 0,
-            screens: [WhiteVisual, WhiteFruitFamily, WhiteFruitQuality, WhiteNonFruit, WhiteMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions, LogWine]
+            screens: [WhiteVisual, WhiteFruitFamily, WhiteFruitQuality, WhiteNonFruit, WhiteMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions]
         }
         this.state.time = (this.props.time*60)
 	}
@@ -346,7 +327,7 @@ export class WhiteTaste extends M.UI {
                 height: '3px',
                 width: `${percRemain}vw`,
                 transform: 'translateX(-50%)',
-                backgroundColor: 'red',
+                backgroundColor: '#f44336',
                 transition: 'width 0.5s ease'
         },
         varclockDisplay = this.state.minute ? 1 : 0,
@@ -357,8 +338,9 @@ export class WhiteTaste extends M.UI {
             bottom: '80%',
             left: '50%',
             transform: 'translateX(-50%)',
-            fontSize: '2rem',
-            color: 'red'
+            fontWeight: '500',
+            fontSize: '3rem',
+            color: '#f44336'
         },
         minutes = Math.floor(this.state.time/60),
         seconds = (this.state.time%60 < 10) ? ('0'+ (this.state.time%60)) : this.state.time%60
@@ -452,7 +434,7 @@ export class RedTaste extends M.UI {
         this.state = {
             obj: new Red(),
             currentScreen: 0,
-            screens: [RedVisual, RedFruitFamily, RedFruitQuality, RedNonFruit, RedMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions, LogWine]
+            screens: [RedVisual, RedFruitFamily, RedFruitQuality, RedNonFruit, RedMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions]
         }
         this.state.time = (this.props.time*60)
     }

@@ -112,7 +112,7 @@ class CardsView extends M.UI {
     				<M.ui.FlatButton onTouchEnd={() => this.newCard()} onClick={() => this.newCard()} label='New Card'/>
     				</M.ui.CardActions>	
 				</M.ui.Card>
-				{this.state.content.map((card) => <FlashCard content={card.attributes}/>)}
+				{this.state.content.map((card) => <FlashCard card={card} parent={this} content={card.attributes}/>)}
 			</div>)
 	}
 }
@@ -121,19 +121,28 @@ class DeckBox extends M.UI {
 	constructor(props) {
 		super(props)
 		this.state = {
-			deck: this.props.deck
+			deck: this.props.deck,
+			owner: false
+		}
+		if (this.props.deck.attributes.createdBy.id === Parse.User.current().id) {
+			this.state.owner = true
 		}
 	}
 	pullCards() {
 		window.location.hash = 'cards'
 		React.render(<CardsView deck={this.state.deck}/>, document.querySelector('.container'))
 	}
+	delete() {
+		this.state.deck.destroy().then(this.props.parent.checkforDecks())
+	}
 	render() {
-		return(<M.ui.Card> 
+		var destroyButton = this.state.owner ? <M.ui.RaisedButton primary={true} onClick={() => this.delete()} label='delete'/> : <span/>
+		return(<M.ui.Card style={{textAlign: 'center', minHeight: '75px', padding: '2rem'}}> 
 			<M.ui.CardTitle title={this.props.deck.attributes.name} />
 			<M.ui.CardActions>
-    		<M.ui.FlatButton onTouchEnd={() => this.pullCards()} onClick={() => this.pullCards()} label='Study'/>
+    		<M.ui.RaisedButton secondary={true} onTouchEnd={() => this.pullCards()} onClick={() => this.pullCards()} label='Study'/>
     		</M.ui.CardActions>
+    		{destroyButton}
 			</M.ui.Card>
 			)
 	}
@@ -143,7 +152,11 @@ class FlashCard extends M.UI {
 	constructor(props) {
 		super(props)
 		this.state = {
-			showAnswer: false
+			showAnswer: false,
+			owner: false
+		}
+		if (this.props.card.attributes.createdBy.id === Parse.User.current().id) {
+			this.state.owner = true
 		}
 	}
 	toggleAnswer() {
@@ -152,9 +165,14 @@ class FlashCard extends M.UI {
 		})
 		console.log(this.state)
 	}
+	delete() {
+		this.props.card.destroy().then(this.props.parent.updateCards())
+	}
 	render() {
-		var cardDisplay = this.state.showAnswer ? '1' : '0'
-		return (<M.ui.Card style={{}}>
+		console.log(this.props.card.attributes.createdBy)
+		var cardDisplay = this.state.showAnswer ? '1' : '0',
+			deleteButton = this.state.owner ? <M.ui.RaisedButton primary={true} onClick={() => this.delete()} label='delete'/> : <span/>
+		return (<M.ui.Card style={{padding: '1rem', textAlign: 'center'}}>
 			        <M.ui.CardText>
 			        Question: {this.props.content.question}
           			</M.ui.CardText>
@@ -164,6 +182,7 @@ class FlashCard extends M.UI {
           			<M.ui.CardText style={{opacity: cardDisplay}}>
 			        Answer: {this.props.content.answer}
           			</M.ui.CardText>
+          		{deleteButton}
 			</M.ui.Card>)
 	}
 }
@@ -204,7 +223,7 @@ class DeckGrid extends M.UI {
     				<M.ui.FlatButton onTouchEnd={() => this.newDeck()} onClick={() => this.newDeck()} label='New Deck'/>
     				</M.ui.CardActions>					
 				</M.ui.Card>
-					{this.state.content.map((v) => <DeckBox deck={v}/>)}
+					{this.state.content.map((v) => <DeckBox parent={this} deck={v}/>)}
 				</div>)
 	}
 }

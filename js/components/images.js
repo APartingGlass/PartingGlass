@@ -78,7 +78,6 @@ export class DownArrow extends React.Component {
 export class Visual extends React.Component {
 	constructor(props) {
 		super(props)
-		console.log('swirl', this.props.show)
 	}
 	render() {
 		var display = (this.props.show === true) ? 'block' : 'none',		
@@ -90,7 +89,6 @@ export class Visual extends React.Component {
 export class Swirl extends React.Component {
 	constructor(props) {
 		super(props)
-		console.log('swirl', this.props.show)
 	}
 	render() {
 		var display = (this.props.show === true) ? 'block' : 'none',		
@@ -101,7 +99,6 @@ export class Swirl extends React.Component {
 export class Nose extends React.Component {
 	constructor(props) {
 		super(props)
-		console.log('swirl', this.props.show)		
 	}
 	render() {
 		var display = (this.props.show === true) ? 'block' : 'none',		
@@ -112,7 +109,6 @@ export class Nose extends React.Component {
 export class Taste extends React.Component {
 	constructor(props) {
 		super(props)
-		console.log('swirl', this.props.show)		
 	}
 	render() {
 		var display = (this.props.show === true) ? 'block' : 'none',		

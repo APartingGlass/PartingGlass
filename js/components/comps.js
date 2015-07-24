@@ -301,12 +301,10 @@ export class TasteLanding extends M.UI {
 	}
 	render() {
 			var tutorial = this.state.showTut ? <Tutorial parent={this} /> : <span />
-		return (<div style={{alignItems: 'center'}} className='tasteLanding'>
-					<div className='wineSelection card' style={{marginBottom: '3rem', textAlign: 'center', background: 'radial-gradient(ellipse at center, rgba(241,111,92,1) 0%, rgba(246,41,12,1) 0%, rgba(240,47,23,1) 4%, rgba(248,80,50,1) 31%, rgba(211,47,47,1) 100%)'}} onTouchEnd={() => this.redTaste()} onClick={() => this.redTaste()}>
-					Red
-					</div>
-					<div className='wineSelection card' style={{textAlign: 'center', background: 'radial-gradient(ellipse at center, rgba(241,231,103,1) 0%, rgba(254,182,69,1) 100%)'}} onTouchEnd={() => this.whiteTaste()} onClick={() => this.whiteTaste()}>
-					White
+		return (<div className='tasteLanding'>
+					<div className='wineColor'>
+					<M.ui.RaisedButton style={{height: '50%'}}  primary={true} onTouchEnd={() => this.redTaste()} onClick={() => this.redTaste()} label='Red Wine'/>
+					<M.ui.RaisedButton  style={{height: '50%'}} onTouchEnd={() => this.whiteTaste()} onClick={() => this.whiteTaste()} label='White Wine'/>
 					</div>
 					{tutorial}
 				</div>)

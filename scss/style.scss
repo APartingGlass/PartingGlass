@@ -200,7 +200,7 @@ body {
 }
 
 .option {
-    border: 2px dashed white;
+    border: 2px solid #78909C;
     min-width: 30%;
     min-height: 25%;
     position: relative;
@@ -218,7 +218,7 @@ body {
         border: 5px solid rgba(0, 160, 80, 0);
         color: #FFF;
         &.prominent {
-            background-color: #e53935;
+            background-color: #f44336;
         }
     }
     &.selected:after,
@@ -291,6 +291,23 @@ body {
     transform: translate(-50%, -50%);
     justify-content: space-around;
     align-items: center;
+}
+
+.wineSelection {
+    min-height: 300px;
+}
+
+.wineColor {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 35%;
+    width: 35%;
+    background-color: #26C6DA;
+    box-shadow: 5px 2.5px 2.5px black;
+    display: flex;
+    flex-direction: column;
 }
 
 @media (min-width: 600px) {
