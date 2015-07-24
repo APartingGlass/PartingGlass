@@ -48,7 +48,7 @@ class Option extends React.Component {
     render() {
         var name = this.props.name,
             status = this.props.styleClass
-        return (<div onTouchEnd={() => this.update()} onClick={() => this.update()} className={`option invariant ${status}`}>
+        return (<div onClick={() => this.update()} className={`option invariant ${status}`}>
             <div className='text'>{this.props.name}</div>
             </div>)
     }
@@ -68,7 +68,7 @@ class VariantOption extends React.Component {
     }
     render() {
         var status = this.props.styleClass
-        return (<div className={`option variant ${status}`} onTouchEnd={() => this.update()} onClick={() => this.update()}>
+        return (<div className={`option variant ${status}`}  onClick={() => this.update()}>
             <div className='text'>{this.props.name}</div>
             </div>)
     }
@@ -123,11 +123,11 @@ class Options extends React.Component {
         if (variant === true) { 
             return (<div className={`options`}>{options.map((str) => 
                     <VariantOption styleClass={this.classifyVariant(str)} node={this} prevState={this.state} name={str}/>)}
-                <a style={{position: 'absolute', width: '100px', height: '100px',left: '50%',top: '100%',transform: 'translateX(-50%)'}} onTouchEnd={()=> this.submitVariant()} onClick={()=> this.submitVariant()}><Img.DownArrow /></a>
+                <a style={{position: 'absolute', width: '100px', height: '100px',left: '50%',top: '100%',transform: 'translateX(-50%)'}}  onClick={()=> this.submitVariant()}><Img.DownArrow /></a>
                 </div>) 
             } else { return (<div className={`options`}>{options.map((str) => 
                     <Option styleClass={this.classifyInvariant(str)} attr={this.props.attr} node={this} name={str}/>)}
-                <a style={{position: 'absolute', width: '100px', height: '100px',left: '50%',top: '100%',transform: 'translateX(-50%)'}} onTouchEnd={()=> this.submit()} onClick={()=> this.submit()}><Img.DownArrow /></a>
+                <a style={{position: 'absolute', width: '100px', height: '100px',left: '50%',top: '100%',transform: 'translateX(-50%)'}}  onClick={()=> this.submit()}><Img.DownArrow /></a>
                 </div>) }
     }
 }
@@ -283,7 +283,7 @@ class Conclusions extends React.Component {
                 <input onChange={() => this.setConclusions('grapes')} ref='grapes'placeholder='Grape/s'/>
                 <input onChange={() => this.setConclusions('year')} ref='year'placeholder='Year'/>
                 <input onChange={() => this.setConclusions('producer')} ref='producer'placeholder='Producer'/>
-                <M.ui.RaisedButton primary={true} onTouchEnd={() => this.confirm()} onClick={() => this.confirm()} label='confirm'/>
+                <M.ui.RaisedButton primary={true} onClick={() => this.confirm()} label='confirm'/>
             </div>)
     }
 }

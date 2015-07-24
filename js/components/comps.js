@@ -69,9 +69,9 @@ export class Login extends M.UI {
 				<div className='loginCard card' style={{backgroundColor: boxColor, transition: transStyle}}>
 					<input style={inputStyle} className="userField" placeholder='username' type='text' value={this.state.username} onChange={(e) => this.setState({username: e.target.value, email:e.target.value})}/>
 					<input style={inputStyle} className="passField" placeholder='password' type='password' value={this.state.password} onChange={(e) => this.setState({password: e.target.value})} />
-					<M.ui.FlatButton onTouchEnd={() => this.login()} onClick={() => this.login()} label='Sign In' />
+					<M.ui.FlatButton  onClick={() => this.login()} label='Sign In' />
 				</div>
-    		    <M.ui.RaisedButton style={{marginTop: '5rem', width: '50%', left: '50%', transform: 'translateX(-50%)', position: 'absolute'}} primary={true} onTouchEnd={() => window.location.hash = 'register'} onClick={() => window.location.hash = 'register'} label="Register"/>
+    		    <M.ui.RaisedButton style={{marginTop: '5rem', width: '50%', left: '50%', transform: 'translateX(-50%)', position: 'absolute'}} primary={true} onClick={() => window.location.hash = 'register'} label="Register"/>
 	    		    </div>)
 	}
 }
@@ -134,8 +134,8 @@ export class Register extends M.UI {
 					<input style={inputStyle} onBlur={() => this._confirmPass()} onChange={(e) => this._handleChange('pass2')} ref="pass2" type='password' value={this.state.pass2} placeholder='confirm password' />					
 					<input style={inputStyle} type='email' onChange={(e) => this._handleChange('email')} ref="email" value={this.state.email} placeholder='email' />
 					<input style={inputStyle} type='text' onChange={(e) => this._handleChange('org')} ref="org" value={this.state.org} placeholder='organization' />
-					<M.ui.RaisedButton style={buttonStyle} primary={true} onTouchEnd={() => this._signUp()} onClick={() => this._signUp()} label='Submit'/>
-					<M.ui.RaisedButton style={buttonStyle} secondary={true} onTouchEnd={() => window.location.hash = 'login'} onClick={() => window.location.hash = 'login'} label='Back'/>					
+					<M.ui.RaisedButton style={buttonStyle} primary={true}  onClick={() => this._signUp()} label='Submit'/>
+					<M.ui.RaisedButton style={buttonStyle} secondary={true}  onClick={() => window.location.hash = 'login'} label='Back'/>					
 				</div>)
 	}
 }
@@ -161,7 +161,7 @@ export class Home extends M.UI {
             <img src="./Images/wines.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
-            <M.ui.RaisedButton onTouchEnd={() => this.taste()} onClick={() => this.taste()} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
+            <M.ui.RaisedButton  onClick={() => this.taste()} label="GO" /><M.ui.FlatButton label={this.showTime()}/>
             <M.ui.Slider className="timeSlider" name="Time" onChange={(e, val) => this.setState({timer:val})} min={4} defaultValue={6} step={0.5} max={10.5}/>
           </M.ui.CardActions>
           <M.ui.CardText>
@@ -174,7 +174,7 @@ export class Home extends M.UI {
             <img src="./Images/barrels.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
-            <M.ui.RaisedButton onTouchEnd={() => window.location.hash = 'log'} onClick={() => window.location.hash = 'log'} label="GO" />
+            <M.ui.RaisedButton  onClick={() => window.location.hash = 'log'} label="GO" />
           </M.ui.CardActions>
           <M.ui.CardText>
           	Revisit and study past tasting notess
@@ -185,7 +185,7 @@ export class Home extends M.UI {
             <img src="./Images/books.jpg"/>
           </M.ui.CardMedia>
           <M.ui.CardActions>
-            <M.ui.RaisedButton onTouchEnd={() => window.location.hash = 'decks'} onClick={() => window.location.hash = 'decks'} label="GO" />
+            <M.ui.RaisedButton  onClick={() => window.location.hash = 'decks'} label="GO" />
           </M.ui.CardActions>
           <M.ui.CardText>
           	Study and retain facts
@@ -303,8 +303,8 @@ export class TasteLanding extends M.UI {
 			var tutorial = this.state.showTut ? <Tutorial parent={this} /> : <span />
 		return (<div className='tasteLanding'>
 					<div className='wineColor'>
-					<M.ui.RaisedButton style={{height: '50%'}}  primary={true} onTouchEnd={() => this.redTaste()} onClick={() => this.redTaste()} label='Red Wine'/>
-					<M.ui.RaisedButton  style={{height: '50%'}} onTouchEnd={() => this.whiteTaste()} onClick={() => this.whiteTaste()} label='White Wine'/>
+					<M.ui.RaisedButton style={{height: '50%'}}  primary={true} onClick={() => this.redTaste()} label='Red Wine'/>
+					<M.ui.RaisedButton  style={{height: '50%'}}  onClick={() => this.whiteTaste()} label='White Wine'/>
 					</div>
 					{tutorial}
 				</div>)
@@ -340,7 +340,7 @@ export class Tutorial extends M.UI {
 	render() {
 		var showOptions = this.state.showOptions ? 'block' : 'none',
 			currentBackground = (this.state.current === this.order.length-1) ? '#00838F' : '#E0F7FA'
-		return (<div style={{transition: 'all 0.5s ease', border: '3px solid black', backgroundColor: currentBackground, flexDirection: 'row'}} onTouchEnd={() => this.nextScreen()} onClick={() => this.nextScreen()} className='example card'>
+		return (<div style={{transition: 'all 0.5s ease', border: '3px solid black', backgroundColor: currentBackground, flexDirection: 'row'}}  onClick={() => this.nextScreen()} className='example card'>
 					<Img.Visual  show={this.state.showVis} />
 					<Img.Swirl  show={this.state.showSwirl} />
 					<Img.Nose  show={this.state.showNose} />
@@ -387,8 +387,8 @@ export class NavBar extends M.UI {
 	}
 	render() {
 		return (<M.ui.AppBar className={this.state.classOpacity} style={{background: '#4DD0E1', color: 'red', position: 'fixed', top: '0'}} title="Parting Glass"
-  					iconElementLeft={<M.ui.IconButton onTouchEnd={() => this.goHome()} onClick={() => this.goHome()}><Img.Logo /></M.ui.IconButton>} 
-  					iconElementRight={<M.ui.IconButton onTouchEnd={() => this.goHome()} onClick={() => this.logOut()}><Img.LogOut/></M.ui.IconButton>}>
+  					iconElementLeft={<M.ui.IconButton  onClick={() => this.goHome()}><Img.Logo /></M.ui.IconButton>} 
+  					iconElementRight={<M.ui.IconButton  onClick={() => this.logOut()}><Img.LogOut/></M.ui.IconButton>}>
   					</M.ui.AppBar>)}
 }
 
