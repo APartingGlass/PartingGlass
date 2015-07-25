@@ -155,6 +155,7 @@ class FlashCard extends M.UI {
 			showAnswer: false,
 			owner: false
 		}
+		if (!this.props.card) {return}
 		if (this.props.card.attributes.createdBy.id === Parse.User.current().id) {
 			this.state.owner = true
 		}
@@ -166,10 +167,10 @@ class FlashCard extends M.UI {
 		console.log(this.state)
 	}
 	delete() {
+		if (!this.props.card) {return }
 		this.props.card.destroy().then(this.props.parent.updateCards())
 	}
 	render() {
-		console.log(this.props.card.attributes.createdBy)
 		var cardDisplay = this.state.showAnswer ? '1' : '0',
 			deleteButton = this.state.owner ? <M.ui.RaisedButton primary={true} onClick={() => this.delete()} label='delete'/> : <span/>
 		return (<M.ui.Card style={{padding: '1rem', textAlign: 'center'}}>
