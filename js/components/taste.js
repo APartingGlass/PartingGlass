@@ -247,6 +247,51 @@ class Alcohol extends React.Component {
     }
 }
 
+class GoogleConclusions extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state  = {
+
+        }
+    }
+    componentDidMount() {
+        var country = React.findDOMNode(this.refs.country),
+            subregion = React.findDOMNode(this.refs.subregion)
+
+        this.country = new google.maps.places.Autocomplete(country, {
+            types: ['(regions)']
+        });
+        this.subregion = new google.maps.places.Autocomplete(subregion, {
+            types: ['(regions)']
+        });
+    }
+    setConclusions(attr) {
+        var newState = {}
+        newState[attr] = React.findDOMNode(this.refs[attr]).value
+        this.setState(newState)
+    }
+    confirm() {
+        var place = this.subregion.getPlace()
+        this.props.wine.set({
+            location: place.geometry.location
+        })
+        this.props.wine.set({
+            conclusions: this.state
+        })
+        this.props.wine.save()
+        window.location.hash = 'home'
+    }
+    render() {
+        return (<div className={`attrScreen ${this.props.className || ''}`}>
+                <input onChange={() => this.setConclusions('country')} ref='country' placeholder='Country'/>
+                <input onChange={() => this.setConclusions('subregion')} ref='subregion'  placeholder='Subregion'/>
+                <input onChange={() => this.setConclusions('grapes')} ref='grapes'placeholder='Grape/s'/>
+                <input onChange={() => this.setConclusions('year')} ref='year'placeholder='Year'/>
+                <input onChange={() => this.setConclusions('producer')} ref='producer'placeholder='Producer'/>
+                <M.ui.RaisedButton primary={true} onClick={() => this.confirm()} label='confirm'/>
+            </div>)
+    }
+}
 
 class Conclusions extends React.Component {
     constructor(props) {
@@ -267,13 +312,6 @@ class Conclusions extends React.Component {
         this.props.wine.save()
         window.location.hash = 'home'
     }
-    nextScreen() {
-        var current = this.props.controller.state.currentScreen
-        current++
-        this.props.controller.setState({currentScreen: current})
-        console.log('next screen')
-        $('html, body').animate({scrollTop: $(document).height()}, 500)
-    }
     render() {
         var mapStyle = this.state.mapOpen
         return(<div className={`attrScreen ${this.props.className || ''}`}>
@@ -288,13 +326,15 @@ class Conclusions extends React.Component {
     }
 }
 
+
 export class WhiteTaste extends M.UI {
 	constructor(props){
 		super(props)
         this.state = {
             obj: new White(),
             currentScreen: 0,
-            screens: [WhiteVisual, WhiteFruitFamily, WhiteFruitQuality, WhiteNonFruit, WhiteMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions]
+            screens: [WhiteVisual, WhiteFruitFamily, WhiteFruitQuality, WhiteNonFruit, WhiteMineralOak, Finish, Sugar, Acid, Alcohol, 
+GoogleConclusions]
         }
         this.state.time = (this.props.time*60)
 	}
@@ -434,7 +474,7 @@ export class RedTaste extends M.UI {
         this.state = {
             obj: new Red(),
             currentScreen: 0,
-            screens: [RedVisual, RedFruitFamily, RedFruitQuality, RedNonFruit, RedMineralOak, Finish, Sugar, Acid, Alcohol, Conclusions]
+            screens: [RedVisual, RedFruitFamily, RedFruitQuality, RedNonFruit, RedMineralOak, Finish, Sugar, Acid, Alcohol, GoogleConclusions]
         }
         this.state.time = (this.props.time*60)
     }
