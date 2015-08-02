@@ -11,7 +11,8 @@ var Taster = Parse.User.extend({
 		username: '',
 		password: '',
 		email: '',
-		showHelp: true
+		showHelp: true,
+		new: true
 	},
 	validate: function () {
 		var req = ['username', 'email', 'password']
@@ -45,14 +46,14 @@ export class Login extends M.UI {
 		}, 3000)
 	}
  	login(e) {
-    if (!!this.state.username && !!this.state.username) {
+    if (!!this.state.username && !!this.state.password) {
         Parse.User.logIn(this.state.username, this.state.password, {
             success: (...args) => {
                 console.log('success')
                 window.location.hash = 'home'
             },
             error: function(user, error) {
-                alert('We were unable to verify your email and password')
+                swal(error.message)
                 React.render(<Login /> , document.querySelector('.container'))
             }
         })
@@ -79,13 +80,12 @@ export class Login extends M.UI {
 export class Register extends M.UI {
 	constructor(props) {
 		super(props)
-		this.user = new Taster()
 		this.state = {
-			username:'',
-			pass1: '',
-			pass2: '',
-			email: '',
-			org: '',
+			username: null,
+			pass1: null,
+			pass2: null,
+			email: null,
+			org: null,
 			passesMatch: true
 		}
 	}
@@ -99,10 +99,17 @@ export class Register extends M.UI {
 		} else {this.setState({passesMatch: true})}
 	}
 	_signUp() {
+		var userInfo = this.state
 		if (this.state.passesMatch === false) {
-			alert('passwords do not match')
+			swal('passwords do not match')
 			return
 		}
+		for (var x in this.state) {
+			if (!this.state[x]) {
+				swal('please fill out all inputs')
+			}
+		}
+		this.user = new Taster()
 		var pass = this.state.pass1,
 			username = this.state.username,
 			email = this.state.email,
@@ -112,15 +119,15 @@ export class Register extends M.UI {
 			password: pass,
 			email: email,
 			organization: org
-		})
-		this.user.signUp(null, {
+		}).then(this.user.signUp(null, {
 			success: () => {
 				window.location.hash ='login'
 			},
 			error: (user, error) => {
-				console.log(error, user)
+				swal(error.message)
 			}
 		})
+		)
 	}
 	render() {
 			var cardStyle = {padding: '3rem'},
@@ -206,6 +213,17 @@ export class Log extends M.UI {
 		}
 		console.log(props.wines)
 	}
+	render() {
+		return (<div className='wineLog'>
+			{this.props.wines.map((v) => <Listing card={v} />)}
+					</div>)
+	}
+}
+
+class Listing extends M.UI {
+	constructor(props) {
+		super(props)
+	}
 	parseProminent(obj) {
 		var results = Object.keys(obj).reduce(
 			(a, v, i) => {
@@ -233,25 +251,24 @@ export class Log extends M.UI {
 		} else {return ''}
 	}
 	render() {
-		var listingView = {display: 'flex', backgroundColor: 'white', flexDirection: 'row', fontFamily: 'Roboto', textAlign: 'center', marginBottom: '1rem'},
-			spanStyle = {fontWeight: '700'}
-		return (<div className='wineLog'>
-			{this.props.wines.map((v) => {
-				var acidity = v.attributes.acidity,
-					alcohol = v.attributes.alcohol,
-					finish = v.attributes.finish,
-					conclusions = v.attributes.conclusions,
-					fruitFamily = v.attributes.fruitFamily,
-					fruitQuality = v.attributes.fruitQuality,
-					mineral = v.attributes.mineral,
-					sugar = v.attributes.sugar,
-					type = v.attributes.type,
-					color = v.attributes.wineColor,
-					nonFruit = v.attributes.nonFruit
-			return (<div style={listingView} data-date={`${v.createdAt.getMonth()}/${v.createdAt.getDay()}`} className='listing card'>
+			var v = this.props.card,	
+				acidity = v.attributes.acidity,
+				alcohol = v.attributes.alcohol,
+				finish = v.attributes.finish,
+				conclusions = v.attributes.conclusions,
+				fruitFamily = v.attributes.fruitFamily,
+				fruitQuality = v.attributes.fruitQuality,
+				mineral = v.attributes.mineral,
+				sugar = v.attributes.sugar,
+				type = v.attributes.type,
+				color = v.attributes.wineColor,
+				nonFruit = v.attributes.nonFruit,
+				listingView = {display: 'flex', backgroundColor: 'white', flexDirection: 'row', fontFamily: 'Roboto', textAlign: 'center', marginBottom: '1rem'},
+				spanStyle = {fontWeight: '700'}
+		return (<div style={listingView} data-date={`${v.createdAt.getMonth()}/${v.createdAt.getDay()}`} className='listing card'>
 									<div style={{flexGrow: '1', flexBasis: '20%', border: '1px dashed #B2DFDB'}} className='about'>
 										<ul>
-											<li>{`${type} wine from ${conclusions.country}, ${conclusions.region}, ${conclusions.subregion}`}</li> 
+											<li>{`${type} wine from ${conclusions.country}, ${conclusions.subregion}`}</li> 
 											<li>{`${conclusions.producer}, ${conclusions.grapes}, ${conclusions.year}`}</li>
 										</ul>
 									</div>
@@ -279,9 +296,6 @@ export class Log extends M.UI {
 									</div>
 								</div>
 								</div>)
-							}
-							)}
-					</div>)
 	}
 }
 
@@ -290,8 +304,10 @@ export class TasteLanding extends M.UI {
 		super(props)
 		this.state = {
 			wine: null,
-			showTut: true
 		}
+		if (Parse.User.current().attributes.new === false) {
+			this.state.showTut = false
+		} else {this.state.showTut = true}
 	}
 	whiteTaste() {
 		React.render(<T.WhiteTaste time={this.props.time} />, document.querySelector('.container'))

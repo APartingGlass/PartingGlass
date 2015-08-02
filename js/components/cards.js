@@ -22,19 +22,19 @@ var Card = Parse.Object.extend({
 
 var acidityLevel = (conclusions, acidity) => {
     return {
-        question: `What is the acidity level of ${conclusions.grapes} from ${conclusions.subregion}?`,
+        question: `What is the acidity level of ${conclusions.grapes} from ${conclusions.producer}?`,
         answer: `${acidity}`
     }
 }
 var geography = (conclusions) => {
     return {
-        question: `What region is ${conclusions.subregion} located in?`,
-        answer: `${conclusions.region}`
+        question: `What country is ${conclusions.subregion} located in?`,
+        answer: `${conclusions.country}`
     }
 }
 var alcoholLevel = (conclusions, alcohol) => {
     return {
-        question: `what kind of alcohol level does ${conclusions.grapes} from ${conclusions.subregion} have?`,
+        question: `what kind of alcohol level does ${conclusions.grapes} from ${conclusions.producer} have?`,
         answer: `${alcohol}`
     }
 }
@@ -210,12 +210,14 @@ class DeckGrid extends M.UI {
 	}
 	newDeck() {
 		var name = prompt('What would you like to name your deck?')
-		this.newDeck = new Deck
-		if (name != null) {
+		console.log(name)
+		if (name.length > 0) {
+			console.log('making new deck')
+			this.newDeck = new Deck
 			this.newDeck.set('name', name)
+			this.newDeck.save()
+			this.checkforDecks()
 		}
-		this.newDeck.save()
-		this.checkforDecks()
 	}
 	render() {
 		return (<div style={{marginTop: '3rem'}}className='decks grid grid-2-400 grid-4-600'>

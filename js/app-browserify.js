@@ -51,7 +51,7 @@ var AppRouter = Parse.Router.extend({
                 React.render(<Comp.Log wines={result} />, document.querySelector('.container'))
             },
             error: function (error) {
-                alert(error)
+                swal({   title: "Error!",   text: error.message,   type: "error",   confirmButtonText: 'Return'});
             }
         })
     },
