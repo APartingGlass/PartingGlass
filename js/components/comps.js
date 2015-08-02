@@ -106,7 +106,7 @@ export class Register extends M.UI {
 		}
 		for (var x in this.state) {
 			if (!this.state[x]) {
-				swal('please fill out all inputs')
+				swal('please fill out all fields')
 			}
 		}
 		this.user = new Taster()
@@ -119,7 +119,8 @@ export class Register extends M.UI {
 			password: pass,
 			email: email,
 			organization: org
-		}).then(this.user.signUp(null, {
+		})
+		this.user.signUp(null, {
 			success: () => {
 				window.location.hash ='login'
 			},
@@ -127,7 +128,7 @@ export class Register extends M.UI {
 				swal(error.message)
 			}
 		})
-		)
+		
 	}
 	render() {
 			var cardStyle = {padding: '3rem'},
@@ -353,6 +354,11 @@ export class Tutorial extends M.UI {
 		nextState[current] = this.state.current++
 		this.setState(nextState)
 	}
+	neverShow() {
+		Parse.User.current().set('new', false)
+		Parse.User.current().save()
+		this.nextScreen()
+	}
 	render() {
 		var showOptions = this.state.showOptions ? 'block' : 'none',
 			currentBackground = (this.state.current === this.order.length-1) ? '#00838F' : '#E0F7FA'
@@ -364,7 +370,8 @@ export class Tutorial extends M.UI {
 					<div style={{display: showOptions}} className ='option'>None</div>
 					<div style={{display: showOptions}} className ='option selected'>Present</div>
 					<div style={{display: showOptions}} className ='option selected prominent'>Prominent</div>
-					<div style={{position: 'absolute', top: '75%', left: '50%', transform: 'translateX(-50%)', fontSize: '1.5rem', fontWeight: '600', textAlign: 'center'}}>{this.textOrder[this.state.current]}</div> 					
+					<div style={{position: 'absolute', top: '75%', left: '50%', transform: 'translateX(-50%)', fontSize: '1.5rem', fontWeight: '600', textAlign: 'center'}}>{this.textOrder[this.state.current]}</div>
+					<M.ui.RaisedButton style={{display: showOptions, position: 'absolute', top: '0', 'left': '50%', transform: 'translateX(-50%)'}} primary={true} onClick={() => this.neverShow()} label='Never Show This Again' />				
 				</div>)
 	}
 }
