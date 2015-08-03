@@ -206,11 +206,6 @@ export class Log extends M.UI {
 	constructor(props) {
 		super(props)
 		this.state = {
-			weatherApi: {
-			url:'http://www.ncdc.noaa.gov/cdo-web/api/v2/', 
-			data:{}, 
-			headers:{ token: 'xMyxWDfOEQGzuVPXnVHEoyCdoQcEvcfZ' }
-			}
 		}
 		console.log(props.wines)
 	}
