@@ -87,8 +87,7 @@ class CardsView extends M.UI {
 		this.newCard.set('deck', this.props.deck)
 		this.newCard.set('question', this.state.question)
 		this.newCard.set('answer', this.state.answer)
-		this.newCard.save()
-		this.updateCards()
+		this.newCard.save().then(() =>this.updateCards())
 	}
 	goBack() {
 		window.location.hash = 'decks'
@@ -209,15 +208,19 @@ class DeckGrid extends M.UI {
 		}).then((results) => this.setState({content: results}))
 	}
 	newDeck() {
-		var name = prompt('What would you like to name your deck?')
-		console.log(name)
-		if (name.length > 0) {
-			console.log('making new deck')
+		swal(
+			{title: 'New Deck', text: "Name your Deck",   type: "input",   showCancelButton: true,   closeOnConfirm: true,   animation: "slide-from-top" }
+			, function(inputData) {
+			if (inputData === false) {
+				return
+			} else if (inputData === '') {
+				return 
+			} else {
 			this.newDeck = new Deck
-			this.newDeck.set('name', name)
-			this.newDeck.save()
-			this.checkforDecks()
-		}
+			this.newDeck.set('name', inputData)
+			this.newDeck.save().then(() =>React.render(<CardsView deck={this.newDeck}/>, document.querySelector('.container')))
+			}
+		})
 	}
 	render() {
 		return (<div style={{marginTop: '3rem'}}className='decks grid grid-2-400 grid-4-600'>
