@@ -218,7 +218,7 @@ body {
         border: 5px solid rgba(0, 160, 80, 0);
         color: #FFF;
         &.prominent {
-            background-color: #f44336;
+            background-color: #00BCD4;
         }
     }
     &.selected:after,
@@ -308,6 +308,7 @@ body {
     box-shadow: 5px 2.5px 2.5px black;
     display: flex;
     flex-direction: column;
+
 }
 
 @media (min-width: 600px) {

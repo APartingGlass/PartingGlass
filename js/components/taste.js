@@ -375,12 +375,13 @@ GoogleConclusions]
             opacity: varclockDisplay,
             transition: 'opacity 0.5s ease',
             position: 'fixed',
-            bottom: '80%',
+            bottom: '50%',
             left: '50%',
             transform: 'translateX(-50%)',
-            fontWeight: '500',
-            fontSize: '3rem',
-            color: '#f44336'
+            fontWeight: '700',
+            fontSize: '6rem',
+            color: '#f44336',
+            zIndex: '1'
         },
         minutes = Math.floor(this.state.time/60),
         seconds = (this.state.time%60 < 10) ? ('0'+ (this.state.time%60)) : this.state.time%60
@@ -515,11 +516,13 @@ export class RedTaste extends M.UI {
             opacity: varclockDisplay,
             transition: 'opacity 0.5s ease',
             position: 'fixed',
-            bottom: '80%',
+            bottom: '50%',
             left: '50%',
             transform: 'translateX(-50%)',
-            fontSize: '2rem',
-            color: 'red'
+            fontWeight: '700',
+            fontSize: '6rem',
+            color: '#f44336',
+            zIndex: '1'
         },
         minutes = Math.floor(this.state.time/60),
         seconds = (this.state.time%60 < 10) ? ('0'+ (this.state.time%60)) : this.state.time%60

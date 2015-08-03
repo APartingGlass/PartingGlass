@@ -320,8 +320,8 @@ export class TasteLanding extends M.UI {
 			var tutorial = this.state.showTut ? <Tutorial parent={this} /> : <span />
 		return (<div className='tasteLanding'>
 					<div className='wineColor'>
-					<M.ui.RaisedButton style={{height: '50%'}}  primary={true} onClick={() => this.redTaste()} label='Red Wine'/>
-					<M.ui.RaisedButton  style={{height: '50%'}}  onClick={() => this.whiteTaste()} label='White Wine'/>
+					<M.ui.RaisedButton style={{width: '50%', margin: 'auto'}}  primary={true} onClick={() => this.redTaste()} label='Red Wine'/>
+					<M.ui.RaisedButton style={{width: '50%', margin: 'auto'}}  onClick={() => this.whiteTaste()} label='White Wine'/>
 					</div>
 					{tutorial}
 				</div>)
