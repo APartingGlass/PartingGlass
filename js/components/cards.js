@@ -88,6 +88,7 @@ class CardsView extends M.UI {
 		this.newCard.set('question', this.state.question)
 		this.newCard.set('answer', this.state.answer)
 		this.newCard.save().then(() =>this.updateCards())
+		this.setState({question: '', answer: ''})
 	}
 	goBack() {
 		window.location.hash = 'decks'
@@ -105,8 +106,8 @@ class CardsView extends M.UI {
     				</M.ui.CardActions>	
 				</M.ui.Card>			
 				<M.ui.Card>
-					<input onChange={(e) => this.updateState(e, 'question')} placeholder='question'/>
-					<input onChange={(e) => this.updateState(e, 'answer')} placeholder='answer'/>
+					<input onChange={(e) => this.updateState(e, 'question')} value={this.state.question} placeholder='question'/>
+					<input onChange={(e) => this.updateState(e, 'answer')} value={this.state.answer} placeholder='answer'/>
 					<M.ui.CardActions>
     				<M.ui.FlatButton  onClick={() => this.newCard()} label='New Card'/>
     				</M.ui.CardActions>	

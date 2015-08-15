@@ -251,12 +251,13 @@ class GoogleConclusions extends React.Component {
     constructor(props) {
         super(props)
         this.state  = {
-
+            key: '16cfd4d9b79fb0bd75cc'
         }
     }
     componentDidMount() {
         var country = React.findDOMNode(this.refs.country),
-            subregion = React.findDOMNode(this.refs.subregion)
+            subregion = React.findDOMNode(this.refs.subregion),
+            producer = React.findDOMNode(this.refs.producer)
 
         this.country = new google.maps.places.Autocomplete(country, {
             types: ['(regions)']
@@ -264,6 +265,7 @@ class GoogleConclusions extends React.Component {
         this.subregion = new google.maps.places.Autocomplete(subregion, {
             types: ['(regions)']
         });
+        this.producer = new google.maps.places.Autocomplete(producer)
     }
     setConclusions(attr) {
         var newState = {}
